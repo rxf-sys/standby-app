@@ -37,16 +37,16 @@ export const ThemeSettingsScreen: React.FC<Props> = () => {
       activeOpacity={0.7}
     >
       <Card
-        style={[
+        style={StyleSheet.flatten([
           styles.optionCard,
-          selectedTheme === mode && styles.optionCardActive,
-        ]}
+          selectedTheme === mode ? styles.optionCardActive : undefined,
+        ])}
       >
         <View style={styles.optionLeft}>
           <View
             style={[
               styles.iconContainer,
-              selectedTheme === mode && styles.iconContainerActive,
+              selectedTheme === mode ? styles.iconContainerActive : undefined,
             ]}
           >
             <Icon
@@ -62,7 +62,7 @@ export const ThemeSettingsScreen: React.FC<Props> = () => {
             <Text
               style={[
                 styles.optionTitle,
-                selectedTheme === mode && styles.optionTitleActive,
+                selectedTheme === mode ? styles.optionTitleActive : undefined,
               ]}
             >
               {title}
@@ -73,7 +73,7 @@ export const ThemeSettingsScreen: React.FC<Props> = () => {
         <View
           style={[
             styles.radioOuter,
-            selectedTheme === mode && styles.radioOuterActive,
+            selectedTheme === mode ? styles.radioOuterActive : undefined,
           ]}
         >
           {selectedTheme === mode && <View style={styles.radioInner} />}
