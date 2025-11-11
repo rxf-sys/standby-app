@@ -5,6 +5,7 @@ import { RootStackParamList } from './types';
 import { BottomTabNavigator } from './BottomTabNavigator';
 import { AuthScreen } from '@/screens/auth/AuthScreen';
 import { SettingsScreen } from '@/screens/settings/SettingsScreen';
+import { ProfileEditScreen } from '@/screens/settings/ProfileEditScreen';
 import { useAuth } from '@/hooks/useAuth';
 import { LoadingScreen } from '@/components/common';
 
@@ -31,6 +32,14 @@ export const RootNavigator: React.FC = () => {
               options={{
                 headerShown: true,
                 title: 'Einstellungen',
+              }}
+            />
+            <Stack.Screen
+              name="ProfileEdit"
+              component={ProfileEditScreen}
+              options={{
+                headerShown: true,
+                title: 'Profil bearbeiten',
               }}
             />
           </>

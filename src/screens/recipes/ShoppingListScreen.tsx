@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ShoppingCart, Trash2, Check } from 'lucide-react-native';
+import { ShoppingCart, Trash2, Check, Plus } from 'lucide-react-native';
 import { RecipesStackParamList } from '@/navigation/types';
 import { Card, EmptyState, LoadingScreen } from '@/components/common';
 import { useShoppingList, useUpdateShoppingListItem, useDeleteShoppingListItem } from '@/hooks/useRecipes';
@@ -17,7 +17,7 @@ import { ShoppingListItem } from '@/types';
 
 type Props = NativeStackScreenProps<RecipesStackParamList, 'ShoppingList'>;
 
-export const ShoppingListScreen: React.FC<Props> = () => {
+export const ShoppingListScreen: React.FC<Props> = ({ navigation }) => {
   const userId = 'mock-user-id'; // Replace with actual user ID
   const { data: items, isLoading } = useShoppingList(userId);
   const updateItem = useUpdateShoppingListItem();
@@ -116,6 +116,15 @@ export const ShoppingListScreen: React.FC<Props> = () => {
           showsVerticalScrollIndicator={false}
         />
       )}
+
+      {/* Floating Action Button */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => navigation.navigate('AddShoppingListItem')}
+        activeOpacity={0.8}
+      >
+        <Plus color={theme.colors.textInverse} size={24} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -186,5 +195,21 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     padding: theme.spacing.sm,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing.lg,
+    right: theme.spacing.lg,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: theme.colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
 });

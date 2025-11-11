@@ -5,6 +5,7 @@ import { RecipeListScreen } from '@/screens/recipes/RecipeListScreen';
 import { RecipeDetailsScreen } from '@/screens/recipes/RecipeDetailsScreen';
 import { ShoppingListScreen } from '@/screens/recipes/ShoppingListScreen';
 import { RecipeSearchScreen } from '@/screens/recipes/RecipeSearchScreen';
+import { AddShoppingListItemScreen } from '@/screens/recipes/AddShoppingListItemScreen';
 import { theme } from '@/theme';
 
 const Stack = createNativeStackNavigator<RecipesStackParamList>();
@@ -41,6 +42,11 @@ export const RecipesStack: React.FC = () => {
         name="RecipeSearch"
         component={RecipeSearchScreen}
         options={{ title: 'Rezepte suchen' }}
+      />
+      <Stack.Screen
+        name="AddShoppingListItem"
+        component={AddShoppingListItemScreen}
+        options={{ title: 'Artikel hinzufügen' }}
       />
     </Stack.Navigator>
   );
