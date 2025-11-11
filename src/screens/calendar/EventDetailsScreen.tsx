@@ -172,7 +172,7 @@ export const EventDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
             )}
 
             {event.reminder && (
-              <View style={[styles.infoRow, event.location && { marginTop: theme.spacing.md }]}>
+              <View style={[styles.infoRow, event.location ? { marginTop: theme.spacing.md } : undefined]}>
                 <Bell color={theme.colors.primary} size={24} />
                 <View style={styles.infoContent}>
                   <Text style={styles.infoLabel}>Erinnerung</Text>
@@ -199,7 +199,7 @@ export const EventDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
             onPress={handleDelete}
             variant="outline"
             icon={<Trash2 color={theme.colors.error} size={20} />}
-            style={[styles.actionButton, styles.deleteButton]}
+            style={StyleSheet.flatten([styles.actionButton, styles.deleteButton])}
             loading={deleteEventMutation.isPending}
           />
         </View>

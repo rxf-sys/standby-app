@@ -103,10 +103,7 @@ export const TransactionDetailsScreen: React.FC<Props> = ({ route, navigation })
             {isIncome ? '+' : '-'}
             {formatCurrency(transaction.amount)}
           </Text>
-          <Text style={styles.title}>{transaction.title}</Text>
-          {transaction.description && (
-            <Text style={styles.description}>{transaction.description}</Text>
-          )}
+          <Text style={styles.title}>{transaction.description || 'Keine Beschreibung'}</Text>
         </Card>
 
         {/* Details */}
@@ -132,7 +129,7 @@ export const TransactionDetailsScreen: React.FC<Props> = ({ route, navigation })
                 <Text style={styles.detailLabel}>Kategorie</Text>
               </View>
               <Badge
-                text={categoryLabel}
+                label={categoryLabel}
                 variant={isIncome ? 'success' : 'error'}
               />
             </View>
