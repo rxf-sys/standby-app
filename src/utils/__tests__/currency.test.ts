@@ -3,12 +3,13 @@ import { formatCurrency, parseCurrency, isValidCurrency, roundCurrency } from '.
 describe('Currency Utils', () => {
   describe('formatCurrency', () => {
     it('should format number as EUR currency', () => {
-      expect(formatCurrency(100)).toBe('100,00 €');
-      expect(formatCurrency(1234.56)).toBe('1.234,56 €');
+      // Note: Intl.NumberFormat uses non-breaking space (\u00A0) between number and currency symbol
+      expect(formatCurrency(100)).toBe('100,00\u00A0€');
+      expect(formatCurrency(1234.56)).toBe('1.234,56\u00A0€');
     });
 
     it('should handle zero', () => {
-      expect(formatCurrency(0)).toBe('0,00 €');
+      expect(formatCurrency(0)).toBe('0,00\u00A0€');
     });
 
     it('should handle negative numbers', () => {
@@ -45,6 +46,7 @@ describe('Currency Utils', () => {
 
     it('should reject invalid strings', () => {
       expect(isValidCurrency('abc')).toBe(false);
+      expect(isValidCurrency('')).toBe(false);
     });
   });
 
