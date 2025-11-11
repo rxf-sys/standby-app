@@ -14,6 +14,17 @@ export const budgetService = {
     return data as Transaction[];
   },
 
+  async getTransactionById(id: string) {
+    const { data, error } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) throw error;
+    return data as Transaction;
+  },
+
   async createTransaction(transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>) {
     const { data, error } = await supabase
       .from('transactions')

@@ -5,6 +5,7 @@ import { Transaction, Budget, SavingsGoal } from '@/types';
 
 const QUERY_KEYS = {
   transactions: (userId: string) => ['transactions', userId],
+  transaction: (id: string) => ['transaction', id],
   budgets: (userId: string) => ['budgets', userId],
   savingsGoals: (userId: string) => ['savingsGoals', userId],
 };
@@ -21,6 +22,14 @@ export const useTransactions = (userId: string) => {
       return data;
     },
     staleTime: 30000, // 30 seconds
+  });
+};
+
+export const useTransaction = (id: string) => {
+  return useQuery({
+    queryKey: QUERY_KEYS.transaction(id),
+    queryFn: () => budgetService.getTransactionById(id),
+    enabled: !!id,
   });
 };
 

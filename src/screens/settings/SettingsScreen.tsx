@@ -106,7 +106,7 @@ export const SettingsScreen: React.FC = () => {
           <SettingsItem
             icon={Lock}
             title="Passwort ändern"
-            onPress={() => Alert.alert('Info', 'Passwort-Änderung kommt bald')}
+            onPress={() => navigation.navigate('ChangePassword')}
           />
         </View>
 
@@ -117,13 +117,13 @@ export const SettingsScreen: React.FC = () => {
             icon={Bell}
             title="Benachrichtigungen"
             subtitle="Push-Benachrichtigungen verwalten"
-            onPress={() => Alert.alert('Info', 'Benachrichtigungs-Einstellungen kommen bald')}
+            onPress={() => navigation.navigate('NotificationSettings')}
           />
           <SettingsItem
             icon={Palette}
             title="Aussehen"
             subtitle="Theme & Farben"
-            onPress={() => Alert.alert('Info', 'Theme-Einstellungen kommen bald')}
+            onPress={() => navigation.navigate('ThemeSettings')}
           />
           <SettingsItem
             icon={Globe}

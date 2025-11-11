@@ -5,6 +5,9 @@ export type RootStackParamList = {
   MainTabs: NavigatorScreenParams<TabParamList>;
   Settings: undefined;
   ProfileEdit: undefined;
+  ChangePassword: undefined;
+  ThemeSettings: undefined;
+  NotificationSettings: undefined;
 };
 
 export type TabParamList = {
