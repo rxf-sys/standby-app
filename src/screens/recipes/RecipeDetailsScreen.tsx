@@ -5,83 +5,99 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Clock, DollarSign, Users } from 'lucide-react-native';
+import { Clock, DollarSign, Users, Heart, Share2, ShoppingCart } from 'lucide-react-native';
 import { RecipesStackParamList } from '@/navigation/types';
-import { Card, LoadingScreen, Button } from '@/components/common';
-import { recipeService } from '@/services/recipeService';
+import { Card, LoadingScreen, Button, Badge, Divider } from '@/components/common';
+import { useRecipes, useToggleFavorite, useAddToShoppingList } from '@/hooks/useRecipes';
 import { theme } from '@/theme';
 import { Recipe } from '@/types';
 
 type Props = NativeStackScreenProps<RecipesStackParamList, 'RecipeDetails'>;
 
-export const RecipeDetailsScreen: React.FC<Props> = ({ route }) => {
+export const RecipeDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
   const { recipeId } = route.params;
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: recipe, isLoading } = useRecipe(recipeId);
+  const toggleFavoriteMutation = useToggleFavorite();
+  const addToShoppingListMutation = useAddToShoppingList();
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  useEffect(() => {
-    loadRecipe();
-  }, [recipeId]);
+  // Mock user ID - in production, get from auth
+  const userId = 'mock-user-id';
 
-  const loadRecipe = async () => {
-    try {
-      const data = await recipeService.getRecipeById(recipeId);
-      setRecipe(data);
-    } catch (error) {
-      console.error('Error loading recipe:', error);
-      // Set mock data
-      setMockRecipe();
-    } finally {
-      setLoading(false);
-    }
+  const handleToggleFavorite = () => {
+    toggleFavoriteMutation.mutate(
+      { userId, recipeId },
+      {
+        onSuccess: (data) => {
+          setIsFavorite(data.isFavorite);
+          Alert.alert(
+            'Erfolg',
+            data.isFavorite ? 'Zu Favoriten hinzugefügt' : 'Aus Favoriten entfernt'
+          );
+        },
+        onError: () => {
+          Alert.alert('Fehler', 'Favoriten konnten nicht aktualisiert werden');
+        },
+      }
+    );
   };
 
-  const setMockRecipe = () => {
-    const mockRecipe: Recipe = {
-      id: recipeId,
-      title: 'Spaghetti Carbonara',
-      description: 'Ein klassisches italienisches Pasta-Gericht, das schnell zubereitet ist und köstlich schmeckt.',
-      prepTime: 10,
-      cookTime: 15,
-      servings: 2,
-      difficulty: 'easy',
-      estimatedCost: 5.5,
-      mealType: ['dinner'],
-      dietary: ['none'],
-      ingredients: [
-        { name: 'Spaghetti', amount: 200, unit: 'g' },
-        { name: 'Eier', amount: 2, unit: 'Stück' },
-        { name: 'Speck', amount: 100, unit: 'g' },
-        { name: 'Parmesan', amount: 50, unit: 'g' },
-        { name: 'Schwarzer Pfeffer', amount: 1, unit: 'TL' },
-      ],
-      instructions: [
-        'Wasser in einem großen Topf zum Kochen bringen und Spaghetti nach Packungsanweisung kochen.',
-        'Währenddessen Speck in kleine Würfel schneiden und in einer Pfanne knusprig anbraten.',
-        'Eier mit geriebenem Parmesan in einer Schüssel verquirlen und mit schwarzem Pfeffer würzen.',
-        'Die gekochten Spaghetti abgießen und etwas Kochwasser auffangen.',
-        'Die heißen Spaghetti mit dem Speck mischen, vom Herd nehmen und die Ei-Mischung schnell unterrühren.',
-        'Falls nötig, etwas Kochwasser hinzufügen für eine cremige Konsistenz.',
-        'Sofort servieren und mit zusätzlichem Parmesan und Pfeffer garnieren.',
-      ],
-      nutrition: {
-        calories: 650,
-        protein: 28,
-        carbs: 75,
-        fat: 24,
-      },
-      tags: ['italienisch', 'pasta', 'schnell'],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+  const handleAddToShoppingList = () => {
+    if (!recipe) return;
+
+    // Add all ingredients to shopping list
+    const promises = recipe.ingredients.map((ingredient) =>
+      addToShoppingListMutation.mutateAsync({
+        userId,
+        recipeId: recipe.id,
+        name: ingredient.name,
+        amount: ingredient.amount,
+        unit: ingredient.unit,
+        checked: false,
+      })
+    );
+
+    Promise.all(promises)
+      .then(() => {
+        Alert.alert(
+          'Erfolg',
+          `${recipe.ingredients.length} Zutaten zur Einkaufsliste hinzugefügt`,
+          [
+            {
+              text: 'Zur Einkaufsliste',
+              onPress: () => navigation.navigate('ShoppingList'),
+            },
+            { text: 'OK' },
+          ]
+        );
+      })
+      .catch(() => {
+        Alert.alert('Fehler', 'Einkaufsliste konnte nicht aktualisiert werden');
+      });
+  };
+
+  const handleShare = () => {
+    Alert.alert('Teilen', 'Teilen-Funktion kommt bald!');
+  };
+
+  const getDifficultyBadge = (difficulty: string) => {
+    const map: Record<string, { variant: any; label: string }> = {
+      easy: { variant: 'success', label: 'Einfach' },
+      medium: { variant: 'warning', label: 'Mittel' },
+      hard: { variant: 'error', label: 'Schwer' },
     };
-    setRecipe(mockRecipe);
+    return map[difficulty] || map.easy;
   };
 
-  if (loading || !recipe) {
+  if (isLoading || !recipe) {
     return <LoadingScreen />;
   }
+
+  const difficultyBadge = getDifficultyBadge(recipe.difficulty);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -89,8 +105,38 @@ export const RecipeDetailsScreen: React.FC<Props> = ({ route }) => {
         <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
       )}
 
+      {/* Floating Action Buttons */}
+      <View style={styles.floatingActions}>
+        <TouchableOpacity
+          style={[styles.actionButton, isFavorite && styles.actionButtonActive]}
+          onPress={handleToggleFavorite}
+        >
+          <Heart
+            color={isFavorite ? theme.colors.error : theme.colors.text}
+            size={24}
+            fill={isFavorite ? theme.colors.error : 'none'}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
+          <Share2 color={theme.colors.text} size={24} />
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.content}>
         <Text style={styles.title}>{recipe.title}</Text>
+
+        {/* Tags and Difficulty */}
+        <View style={styles.metaRow}>
+          <Badge
+            label={difficultyBadge.label}
+            variant={difficultyBadge.variant}
+            size="sm"
+          />
+          {recipe.tags && recipe.tags.slice(0, 3).map((tag, index) => (
+            <Badge key={index} label={tag} variant="secondary" size="sm" />
+          ))}
+        </View>
+
         <Text style={styles.description}>{recipe.description}</Text>
 
         {/* Info Cards */}
@@ -167,9 +213,11 @@ export const RecipeDetailsScreen: React.FC<Props> = ({ route }) => {
 
         <Button
           title="Zur Einkaufsliste hinzufügen"
-          onPress={() => {}}
+          onPress={handleAddToShoppingList}
           fullWidth
           style={styles.addButton}
+          icon={<ShoppingCart color={theme.colors.textInverse} size={20} />}
+          loading={addToShoppingListMutation.isPending}
         />
       </View>
     </ScrollView>
@@ -186,8 +234,33 @@ const styles = StyleSheet.create({
     height: 250,
     backgroundColor: theme.colors.surfaceSecondary,
   },
+  floatingActions: {
+    position: 'absolute',
+    top: 200,
+    right: theme.spacing.md,
+    gap: theme.spacing.sm,
+    zIndex: 10,
+  },
+  actionButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: theme.colors.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...theme.shadow.md,
+  },
+  actionButtonActive: {
+    backgroundColor: theme.colors.surface,
+  },
   content: {
     padding: theme.spacing.md,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.xs,
+    marginBottom: theme.spacing.md,
   },
   title: {
     fontSize: theme.typography.fontSize['3xl'],

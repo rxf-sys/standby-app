@@ -97,4 +97,45 @@ export const recipeService = {
 
     if (error) throw error;
   },
+
+  // Favorites
+  async toggleFavorite(userId: string, recipeId: string) {
+    // Check if favorite exists
+    const { data: existing } = await supabase
+      .from('user_favorites')
+      .select('*')
+      .eq('userId', userId)
+      .eq('recipeId', recipeId)
+      .single();
+
+    if (existing) {
+      // Remove favorite
+      const { error } = await supabase
+        .from('user_favorites')
+        .delete()
+        .eq('userId', userId)
+        .eq('recipeId', recipeId);
+
+      if (error) throw error;
+      return { isFavorite: false };
+    } else {
+      // Add favorite
+      const { error } = await supabase
+        .from('user_favorites')
+        .insert({ userId, recipeId });
+
+      if (error) throw error;
+      return { isFavorite: true };
+    }
+  },
+
+  async getFavorites(userId: string) {
+    const { data, error } = await supabase
+      .from('user_favorites')
+      .select('recipeId, recipes(*)')
+      .eq('userId', userId);
+
+    if (error) throw error;
+    return data?.map((item: any) => item.recipes) as Recipe[];
+  },
 };

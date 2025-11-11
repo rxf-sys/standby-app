@@ -92,3 +92,19 @@ export const useDeleteShoppingListItem = () => {
     },
   });
 };
+
+// Favorites
+export const useToggleFavorite = () => {
+  const queryClient = useQueryClient();
+  const { toggleFavorite } = useRecipeStore();
+
+  return useMutation({
+    mutationFn: ({ userId, recipeId }: { userId: string; recipeId: string }) =>
+      recipeService.toggleFavorite(userId, recipeId),
+    onSuccess: (data, variables) => {
+      toggleFavorite(variables.recipeId);
+      queryClient.invalidateQueries({ queryKey: ['recipes'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.recipe(variables.recipeId) });
+    },
+  });
+};
