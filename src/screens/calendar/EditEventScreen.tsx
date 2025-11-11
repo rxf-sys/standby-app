@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,12 +9,13 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CalendarStackParamList } from '@/navigation/types';
-import { Button, Input } from '@/components/common';
-import { useCreateEvent } from '@/hooks/useCalendar';
+import { Button, Input, LoadingScreen } from '@/components/common';
+import { useEvent, useUpdateEvent } from '@/hooks/useCalendar';
 import { theme } from '@/theme';
 import { EventCategory, ReminderType } from '@/types';
+import { format } from 'date-fns';
 
-type Props = NativeStackScreenProps<CalendarStackParamList, 'AddEvent'>;
+type Props = NativeStackScreenProps<CalendarStackParamList, 'EditEvent'>;
 
 const CATEGORIES: Array<{ value: EventCategory; label: string }> = [
   { value: 'uni', label: 'Uni' },
@@ -34,9 +35,10 @@ const REMINDERS: Array<{ value: ReminderType; label: string }> = [
   { value: '1day', label: '1 Tag vorher' },
 ];
 
-export const AddEventScreen: React.FC<Props> = ({ navigation, route }) => {
-  const { date } = route.params;
-  const createEventMutation = useCreateEvent();
+export const EditEventScreen: React.FC<Props> = ({ navigation, route }) => {
+  const { eventId } = route.params;
+  const { data: event, isLoading } = useEvent(eventId);
+  const updateEventMutation = useUpdateEvent();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -46,13 +48,30 @@ export const AddEventScreen: React.FC<Props> = ({ navigation, route }) => {
   const [startTime, setStartTime] = useState('09:00');
   const [endTime, setEndTime] = useState('10:00');
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    if (event) {
+      setTitle(event.title);
+      setDescription(event.description || '');
+      setLocation(event.location || '');
+      setCategory(event.category);
+      setReminder(event.reminder || 'none');
+
+      if (!event.isAllDay) {
+        setStartTime(format(new Date(event.startDate), 'HH:mm'));
+        setEndTime(format(new Date(event.endDate), 'HH:mm'));
+      }
+    }
+  }, [event]);
+
+  const handleSubmit = async () => {
     if (!title.trim()) {
       Alert.alert('Fehler', 'Bitte gib einen Titel ein');
       return;
     }
 
-    const eventDate = date ? new Date(date) : new Date();
+    if (!event) return;
+
+    const eventDate = new Date(event.startDate);
     const [startHour, startMin] = startTime.split(':').map(Number);
     const [endHour, endMin] = endTime.split(':').map(Number);
 
@@ -62,30 +81,36 @@ export const AddEventScreen: React.FC<Props> = ({ navigation, route }) => {
     const endDate = new Date(eventDate);
     endDate.setHours(endHour, endMin, 0, 0);
 
-    createEventMutation.mutate(
+    updateEventMutation.mutate(
       {
-        userId: 'mock-user-id',
-        title: title.trim(),
-        description: description.trim() || undefined,
-        location: location.trim() || undefined,
-        category,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        reminder,
-        isAllDay: false,
+        id: eventId,
+        updates: {
+          title: title.trim(),
+          description: description.trim() || undefined,
+          location: location.trim() || undefined,
+          category,
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          reminder,
+          isAllDay: event.isAllDay,
+        },
       },
       {
         onSuccess: () => {
-          Alert.alert('Erfolg', 'Termin wurde hinzugefügt', [
+          Alert.alert('Erfolg', 'Termin wurde aktualisiert', [
             { text: 'OK', onPress: () => navigation.goBack() },
           ]);
         },
         onError: () => {
-          Alert.alert('Fehler', 'Termin konnte nicht gespeichert werden');
+          Alert.alert('Fehler', 'Termin konnte nicht aktualisiert werden');
         },
       }
     );
   };
+
+  if (isLoading || !event) {
+    return <LoadingScreen />;
+  }
 
   return (
     <View style={styles.container}>
@@ -113,24 +138,26 @@ export const AddEventScreen: React.FC<Props> = ({ navigation, route }) => {
           placeholder="z.B. Hörsaal A"
         />
 
-        <View style={styles.timeContainer}>
-          <View style={styles.timeInput}>
-            <Input
-              label="Startzeit"
-              value={startTime}
-              onChangeText={setStartTime}
-              placeholder="09:00"
-            />
+        {!event.isAllDay && (
+          <View style={styles.timeContainer}>
+            <View style={styles.timeInput}>
+              <Input
+                label="Startzeit"
+                value={startTime}
+                onChangeText={setStartTime}
+                placeholder="09:00"
+              />
+            </View>
+            <View style={styles.timeInput}>
+              <Input
+                label="Endzeit"
+                value={endTime}
+                onChangeText={setEndTime}
+                placeholder="10:00"
+              />
+            </View>
           </View>
-          <View style={styles.timeInput}>
-            <Input
-              label="Endzeit"
-              value={endTime}
-              onChangeText={setEndTime}
-              placeholder="10:00"
-            />
-          </View>
-        </View>
+        )}
 
         <View style={styles.section}>
           <Text style={styles.label}>Kategorie</Text>
@@ -183,9 +210,9 @@ export const AddEventScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
 
         <Button
-          title="Termin erstellen"
+          title="Änderungen speichern"
           onPress={handleSubmit}
-          loading={createEventMutation.isPending}
+          loading={updateEventMutation.isPending}
           fullWidth
           style={styles.submitButton}
         />

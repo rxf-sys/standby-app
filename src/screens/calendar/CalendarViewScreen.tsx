@@ -7,14 +7,26 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Plus, Calendar as CalendarIcon } from 'lucide-react-native';
+import { Plus, Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { CalendarStackParamList } from '@/navigation/types';
 import { Card, LoadingScreen } from '@/components/common';
 import { useCalendarStore } from '@/store/calendarStore';
 import { calendarService } from '@/services/calendarService';
 import { theme } from '@/theme';
 import { CalendarEvent, EventCategory } from '@/types';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday } from 'date-fns';
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  isSameDay,
+  isToday,
+  addMonths,
+  subMonths,
+  startOfWeek,
+  endOfWeek,
+  getDay,
+} from 'date-fns';
 import { de } from 'date-fns/locale';
 
 type Props = NativeStackScreenProps<CalendarStackParamList, 'CalendarView'>;
@@ -90,9 +102,23 @@ export const CalendarViewScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const getDaysInMonth = () => {
-    const start = startOfMonth(currentMonth);
-    const end = endOfMonth(currentMonth);
-    return eachDayOfInterval({ start, end });
+    const monthStart = startOfMonth(currentMonth);
+    const monthEnd = endOfMonth(currentMonth);
+    const calendarStart = startOfWeek(monthStart, { weekStartsOn: 1 }); // Monday
+    const calendarEnd = endOfWeek(monthEnd, { weekStartsOn: 1 });
+    return eachDayOfInterval({ start: calendarStart, end: calendarEnd });
+  };
+
+  const handlePreviousMonth = () => {
+    setCurrentMonth(subMonths(currentMonth, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(addMonths(currentMonth, 1));
+  };
+
+  const handleEventPress = (eventId: string) => {
+    navigation.navigate('EventDetails', { eventId });
   };
 
   const selectedDateEvents = events.filter((event) =>
@@ -106,11 +132,19 @@ export const CalendarViewScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Month Header */}
+        {/* Month Header with Navigation */}
         <Card style={styles.monthCard}>
-          <Text style={styles.monthText}>
-            {format(currentMonth, 'MMMM yyyy', { locale: de })}
-          </Text>
+          <View style={styles.monthHeader}>
+            <TouchableOpacity onPress={handlePreviousMonth} style={styles.monthNavButton}>
+              <ChevronLeft color={theme.colors.primary} size={28} />
+            </TouchableOpacity>
+            <Text style={styles.monthText}>
+              {format(currentMonth, 'MMMM yyyy', { locale: de })}
+            </Text>
+            <TouchableOpacity onPress={handleNextMonth} style={styles.monthNavButton}>
+              <ChevronRight color={theme.colors.primary} size={28} />
+            </TouchableOpacity>
+          </View>
         </Card>
 
         {/* Calendar Grid */}
@@ -185,30 +219,37 @@ export const CalendarViewScreen: React.FC<Props> = ({ navigation }) => {
             </Card>
           ) : (
             selectedDateEvents.map((event) => (
-              <Card key={event.id} style={styles.eventCard}>
-                <View
-                  style={[
-                    styles.eventColorBar,
-                    { backgroundColor: CATEGORY_COLORS[event.category] },
-                  ]}
-                />
-                <View style={styles.eventContent}>
-                  <Text style={styles.eventTitle}>{event.title}</Text>
-                  {event.description && (
-                    <Text style={styles.eventDescription}>{event.description}</Text>
-                  )}
-                  <View style={styles.eventMeta}>
-                    <CalendarIcon color={theme.colors.textSecondary} size={14} />
-                    <Text style={styles.eventTime}>
-                      {format(new Date(event.startDate), 'HH:mm')} -{' '}
-                      {format(new Date(event.endDate), 'HH:mm')}
-                    </Text>
+              <TouchableOpacity
+                key={event.id}
+                onPress={() => handleEventPress(event.id)}
+                activeOpacity={0.7}
+              >
+                <Card style={styles.eventCard}>
+                  <View
+                    style={[
+                      styles.eventColorBar,
+                      { backgroundColor: CATEGORY_COLORS[event.category] },
+                    ]}
+                  />
+                  <View style={styles.eventContent}>
+                    <Text style={styles.eventTitle}>{event.title}</Text>
+                    {event.description && (
+                      <Text style={styles.eventDescription}>{event.description}</Text>
+                    )}
+                    <View style={styles.eventMeta}>
+                      <CalendarIcon color={theme.colors.textSecondary} size={14} />
+                      <Text style={styles.eventTime}>
+                        {event.isAllDay
+                          ? 'Ganztägig'
+                          : `${format(new Date(event.startDate), 'HH:mm')} - ${format(new Date(event.endDate), 'HH:mm')}`}
+                      </Text>
+                    </View>
+                    {event.location && (
+                      <Text style={styles.eventLocation}>📍 {event.location}</Text>
+                    )}
                   </View>
-                  {event.location && (
-                    <Text style={styles.eventLocation}>{event.location}</Text>
-                  )}
-                </View>
-              </Card>
+                </Card>
+              </TouchableOpacity>
             ))
           )}
         </View>
@@ -233,7 +274,14 @@ const styles = StyleSheet.create({
   },
   monthCard: {
     marginBottom: theme.spacing.md,
+  },
+  monthHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  monthNavButton: {
+    padding: theme.spacing.xs,
   },
   monthText: {
     fontSize: theme.typography.fontSize['2xl'],
