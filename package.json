@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "type-check": "tsc --noEmit",
-    "prepare": "husky install",
+    "prepare": "husky install || true",
     "build:ios": "eas build --platform ios",
     "build:android": "eas build --platform android",
     "submit:ios": "eas submit --platform ios",
