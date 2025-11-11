@@ -14,17 +14,31 @@ StandBy ist die erste All-in-One-App, die junge Menschen (16-25 Jahre) beim Übe
 
 ### ✨ Features
 
+- 🔐 **Authentifizierung & Profile** - Sicher und personalisiert
+  - Benutzerregistrierung und -anmeldung
+  - Profilmanagement mit Avatar
+  - Passwort-Reset Funktion
+  - Sichere Authentifizierung mit Supabase
+
 - 💰 **Budgetplaner** - Behalte deine Finanzen im Griff
   - Einnahmen & Ausgaben tracken
   - Kategorisierung & Budget-Limits
-  - Visualisierungen & Statistiken
-  - Sparziele definieren
+  - Visualisierungen & Statistiken mit Victory Charts
+  - Sparziele definieren und verfolgen
+  - Detaillierte Statistiken mit:
+    - Monatliche Trendanalyse (6 Monate)
+    - Ausgaben nach Kategorien (Pie Chart)
+    - Top Ausgabenkategorien (Bar Chart)
+    - Sparquote mit visueller Darstellung
+    - Monatliche Übersicht mit Einnahmen, Ausgaben und Bilanz
 
 - 🍳 **Rezeptvorschläge** - Günstig, einfach, lecker
   - 300+ Rezepte speziell für junge Menschen
   - Filter nach Budget, Zeit & Ernährung
-  - Einkaufsliste mit einem Tap
+  - Interaktive Einkaufsliste mit Checkbox-Funktion
   - "Was kann ich kochen?" Funktion
+  - Favoriten-Management
+  - Schwierigkeitsgrade (Einfach, Mittel, Schwer)
 
 - 📅 **Terminkalender** - Organisation leicht gemacht
   - Termine erstellen & verwalten
@@ -32,7 +46,13 @@ StandBy ist die erste All-in-One-App, die junge Menschen (16-25 Jahre) beim Übe
   - Multi-Device Synchronisation
   - Erinnerungen & Benachrichtigungen
 
-- 🔄 **Offline-First** - Funktioniert auch ohne Internet
+- ⚙️ **Einstellungen & Anpassungen**
+  - Profilbearbeitung
+  - Passwort ändern
+  - App-Einstellungen (Benachrichtigungen, Theme, Sprache)
+  - Logout-Funktion
+
+- 🔄 **Offline-First** - Funktioniert auch ohne Internet (geplant mit WatermelonDB)
 - 🔐 **Datenschutz** - DSGVO-konform, EU-Server
 - 🎨 **Modern & Intuitiv** - Für Digital Natives gemacht
 
@@ -85,14 +105,67 @@ npm run web
 
 ## 🏗️ Tech Stack
 
-- **Frontend:** React Native + Expo
-- **Backend:** Supabase (PostgreSQL)
+- **Frontend:** React Native + Expo (~50.0.0)
+- **Language:** TypeScript (strict mode)
+- **Backend:** Supabase (PostgreSQL mit Row Level Security)
 - **State Management:** Zustand
-- **Data Fetching:** TanStack Query
-- **Offline Support:** WatermelonDB
-- **UI Library:** React Native Paper
-- **Charts:** Victory Native
+- **Data Fetching:** TanStack Query (React Query v5) mit Caching & Optimistic Updates
+- **Navigation:** React Navigation v6 (Bottom Tabs + Native Stack)
+- **Offline Support:** WatermelonDB (geplant)
+- **UI Library:** React Native Paper + Lucide Icons
+- **Charts:** Victory Native (Line, Pie, Bar Charts)
+- **Date Handling:** date-fns v3
+- **Validation:** Zod Schemas
 - **Testing:** Jest + React Native Testing Library
+
+## 📂 Projektstruktur
+
+```
+src/
+├── components/          # Wiederverwendbare UI-Komponenten
+│   ├── common/         # Generische Komponenten (Button, Card, Badge, etc.)
+│   ├── budget/         # Budget-spezifische Komponenten
+│   ├── recipes/        # Rezept-spezifische Komponenten
+│   └── calendar/       # Kalender-spezifische Komponenten
+├── screens/            # App-Bildschirme
+│   ├── auth/          # Authentifizierung (Login, Register)
+│   ├── budget/        # Budget-Screens (Overview, Transactions, Statistics)
+│   ├── recipes/       # Rezept-Screens (List, Details, Shopping List)
+│   ├── calendar/      # Kalender-Screens
+│   └── settings/      # Einstellungen & Profil
+├── navigation/         # React Navigation Setup
+│   ├── types.ts       # Navigation Type Definitions
+│   ├── RootNavigator.tsx
+│   └── BottomTabNavigator.tsx
+├── services/          # API & Backend Services
+│   ├── supabase.ts    # Supabase Client
+│   ├── authService.ts # Authentifizierung
+│   ├── budgetService.ts
+│   └── recipeService.ts
+├── store/             # Zustand State Management
+│   ├── authStore.ts
+│   ├── budgetStore.ts
+│   └── recipeStore.ts
+├── hooks/             # Custom React Hooks (React Query)
+│   ├── useAuth.ts
+│   ├── useBudget.ts
+│   └── useRecipes.ts
+├── utils/             # Utility Funktionen
+│   ├── currency.ts    # Währungsformatierung
+│   ├── date.ts        # Datums-Utilities
+│   ├── validation.ts  # Zod Validation Schemas
+│   ├── statistics.ts  # Finanzstatistiken
+│   └── storage.ts     # AsyncStorage Wrapper
+├── types/             # TypeScript Type Definitions
+│   ├── budget.ts
+│   ├── recipe.ts
+│   ├── calendar.ts
+│   └── user.ts
+└── theme/             # Theme System (Farben, Spacing, Typography)
+    ├── colors.ts
+    ├── spacing.ts
+    └── typography.ts
+```
 
 ## 📚 Dokumentation
 

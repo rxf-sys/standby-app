@@ -1,10 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Wallet, ChefHat, Calendar } from 'lucide-react-native';
+import { Wallet, ChefHat, Calendar, User } from 'lucide-react-native';
 import { TabParamList } from './types';
 import { BudgetStack } from './BudgetStack';
 import { RecipesStack } from './RecipesStack';
 import { CalendarStack } from './CalendarStack';
+import { SettingsScreen } from '@/screens/settings/SettingsScreen';
 import { theme } from '@/theme';
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -56,6 +57,18 @@ export const BottomTabNavigator: React.FC = () => {
           tabBarLabel: 'Kalender',
           tabBarIcon: ({ color, size }) => (
             <Calendar color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ProfileTab"
+        component={SettingsScreen}
+        options={{
+          headerShown: true,
+          title: 'Profil',
+          tabBarLabel: 'Profil',
+          tabBarIcon: ({ color, size }) => (
+            <User color={color} size={size} />
           ),
         }}
       />

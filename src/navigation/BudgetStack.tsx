@@ -5,6 +5,7 @@ import { BudgetOverviewScreen } from '@/screens/budget/BudgetOverviewScreen';
 import { AddTransactionScreen } from '@/screens/budget/AddTransactionScreen';
 import { SavingsGoalsScreen } from '@/screens/budget/SavingsGoalsScreen';
 import { AddSavingsGoalScreen } from '@/screens/budget/AddSavingsGoalScreen';
+import { BudgetStatisticsScreen } from '@/screens/budget/BudgetStatisticsScreen';
 import { theme } from '@/theme';
 
 const Stack = createNativeStackNavigator<BudgetStackParamList>();
@@ -43,6 +44,11 @@ export const BudgetStack: React.FC = () => {
         name="AddSavingsGoal"
         component={AddSavingsGoalScreen}
         options={{ title: 'Neues Sparziel' }}
+      />
+      <Stack.Screen
+        name="BudgetStatistics"
+        component={BudgetStatisticsScreen}
+        options={{ title: 'Statistiken' }}
       />
     </Stack.Navigator>
   );

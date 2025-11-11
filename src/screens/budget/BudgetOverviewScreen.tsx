@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Plus, TrendingUp, TrendingDown } from 'lucide-react-native';
+import { Plus, TrendingUp, TrendingDown, Target, BarChart3 } from 'lucide-react-native';
 import { BudgetStackParamList } from '@/navigation/types';
 import { Card, LoadingScreen } from '@/components/common';
 import { useBudgetStore } from '@/store/budgetStore';
@@ -107,6 +107,24 @@ export const BudgetOverviewScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.actionButtonText}>Ausgabe</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Savings Goals Button */}
+        <TouchableOpacity
+          style={styles.savingsGoalsButton}
+          onPress={() => navigation.navigate('SavingsGoals')}
+        >
+          <Target color={theme.colors.primary} size={20} />
+          <Text style={styles.savingsGoalsText}>Meine Sparziele</Text>
+        </TouchableOpacity>
+
+        {/* Statistics Button */}
+        <TouchableOpacity
+          style={styles.statisticsButton}
+          onPress={() => navigation.navigate('BudgetStatistics')}
+        >
+          <BarChart3 color={theme.colors.secondary} size={20} />
+          <Text style={styles.statisticsText}>Statistiken</Text>
+        </TouchableOpacity>
 
         {/* Recent Transactions */}
         <View style={styles.section}>
@@ -212,6 +230,40 @@ const styles = StyleSheet.create({
   },
   actionButtonText: {
     color: theme.colors.textInverse,
+    fontSize: theme.typography.fontSize.md,
+    fontWeight: theme.typography.fontWeight.semibold,
+  },
+  savingsGoalsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    marginBottom: theme.spacing.lg,
+    gap: theme.spacing.sm,
+  },
+  savingsGoalsText: {
+    color: theme.colors.primary,
+    fontSize: theme.typography.fontSize.md,
+    fontWeight: theme.typography.fontWeight.semibold,
+  },
+  statisticsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.secondary,
+    marginBottom: theme.spacing.lg,
+    gap: theme.spacing.sm,
+  },
+  statisticsText: {
+    color: theme.colors.secondary,
     fontSize: theme.typography.fontSize.md,
     fontWeight: theme.typography.fontWeight.semibold,
   },
