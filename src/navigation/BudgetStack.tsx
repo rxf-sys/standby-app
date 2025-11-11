@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BudgetStackParamList } from './types';
 import { BudgetOverviewScreen } from '@/screens/budget/BudgetOverviewScreen';
 import { AddTransactionScreen } from '@/screens/budget/AddTransactionScreen';
+import { SavingsGoalsScreen } from '@/screens/budget/SavingsGoalsScreen';
+import { AddSavingsGoalScreen } from '@/screens/budget/AddSavingsGoalScreen';
 import { theme } from '@/theme';
 
 const Stack = createNativeStackNavigator<BudgetStackParamList>();
@@ -31,6 +33,16 @@ export const BudgetStack: React.FC = () => {
         options={({ route }) => ({
           title: route.params.type === 'income' ? 'Einnahme hinzufügen' : 'Ausgabe hinzufügen',
         })}
+      />
+      <Stack.Screen
+        name="SavingsGoals"
+        component={SavingsGoalsScreen}
+        options={{ title: 'Sparziele' }}
+      />
+      <Stack.Screen
+        name="AddSavingsGoal"
+        component={AddSavingsGoalScreen}
+        options={{ title: 'Neues Sparziel' }}
       />
     </Stack.Navigator>
   );
