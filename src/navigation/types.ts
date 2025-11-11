@@ -1,6 +1,7 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type RootStackParamList = {
+  Auth: undefined;
   MainTabs: NavigatorScreenParams<TabParamList>;
   Settings: undefined;
 };
