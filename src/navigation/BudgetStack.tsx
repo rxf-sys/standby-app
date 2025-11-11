@@ -4,6 +4,7 @@ import { BudgetStackParamList } from './types';
 import { BudgetOverviewScreen } from '@/screens/budget/BudgetOverviewScreen';
 import { AddTransactionScreen } from '@/screens/budget/AddTransactionScreen';
 import { TransactionDetailsScreen } from '@/screens/budget/TransactionDetailsScreen';
+import { EditTransactionScreen } from '@/screens/budget/EditTransactionScreen';
 import { SavingsGoalsScreen } from '@/screens/budget/SavingsGoalsScreen';
 import { AddSavingsGoalScreen } from '@/screens/budget/AddSavingsGoalScreen';
 import { BudgetStatisticsScreen } from '@/screens/budget/BudgetStatisticsScreen';
@@ -40,6 +41,11 @@ export const BudgetStack: React.FC = () => {
         name="TransactionDetails"
         component={TransactionDetailsScreen}
         options={{ title: 'Transaktionsdetails' }}
+      />
+      <Stack.Screen
+        name="EditTransaction"
+        component={EditTransactionScreen}
+        options={{ title: 'Transaktion bearbeiten' }}
       />
       <Stack.Screen
         name="SavingsGoals"

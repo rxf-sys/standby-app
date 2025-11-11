@@ -72,7 +72,7 @@ export const TransactionDetailsScreen: React.FC<Props> = ({ route, navigation })
   };
 
   const handleEdit = () => {
-    Alert.alert('Info', 'Bearbeitungsfunktion kommt bald');
+    navigation.navigate('EditTransaction', { transactionId });
   };
 
   if (isLoading || !transaction) {
