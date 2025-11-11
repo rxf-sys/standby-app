@@ -19,23 +19,8 @@ export const authService = {
 
     if (error) throw error;
 
-    if (data.user) {
-      // Create profile in profiles table
-      const { error: profileError } = await supabase.from('profiles').insert({
-        id: data.user.id,
-        email: data.user.email!,
-        name,
-      });
-
-      if (profileError) throw profileError;
-
-      // Create default preferences
-      const { error: prefError } = await supabase.from('user_preferences').insert({
-        user_id: data.user.id,
-      });
-
-      if (prefError) throw prefError;
-    }
+    // Note: User profile is automatically created via database trigger
+    // See supabase/schema.sql - handle_new_user() function
 
     return data;
   },
@@ -88,9 +73,9 @@ export const authService = {
 
     if (!data.user) return null;
 
-    // Get profile data
+    // Get user profile data
     const { data: profile, error: profileError } = await supabase
-      .from('profiles')
+      .from('users')
       .select('*')
       .eq('id', data.user.id)
       .single();
@@ -112,7 +97,7 @@ export const authService = {
    */
   async updateProfile(userId: string, updates: Partial<User>) {
     const { data, error } = await supabase
-      .from('profiles')
+      .from('users')
       .update({
         name: updates.name,
         avatar_url: updates.avatarUrl,

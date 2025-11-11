@@ -36,8 +36,8 @@ export const AuthScreen: React.FC = () => {
       setEmailError('');
     }
 
-    if (!password || password.length < 6) {
-      setPasswordError('Passwort muss mindestens 6 Zeichen lang sein');
+    if (!password || password.length < 8) {
+      setPasswordError('Passwort muss mindestens 8 Zeichen lang sein');
       isValid = false;
     } else {
       setPasswordError('');
@@ -128,7 +128,7 @@ export const AuthScreen: React.FC = () => {
                 setPassword(text);
                 setPasswordError('');
               }}
-              placeholder={isLogin ? 'Dein Passwort' : 'Mindestens 6 Zeichen'}
+              placeholder={isLogin ? 'Dein Passwort' : 'Mindestens 8 Zeichen'}
               secureTextEntry
               leftIcon={<Lock color={theme.colors.textSecondary} size={20} />}
               error={passwordError}

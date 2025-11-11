@@ -67,19 +67,45 @@ StandBy ist die erste All-in-One-App, die junge Menschen (16-25 Jahre) beim Übe
 - Für Android: Android Studio
 
 ### Installation
+
+#### 1. Repository Setup
 ```bash
 # Repository klonen
 git clone https://github.com/username/standby-app.git
 cd standby-app
 
 # Dependencies installieren
-npm install
+npm install --legacy-peer-deps
+```
 
-# Environment Variables einrichten
+#### 2. Supabase Setup
+
+1. Erstelle ein kostenloses Supabase-Projekt auf [supabase.com](https://supabase.com)
+2. Gehe zu **Project Settings** → **API** und kopiere:
+   - Project URL
+   - anon/public key
+3. Erstelle `.env.development` Datei:
+```bash
 cp .env.example .env.development
-# Füge deine Supabase Keys in .env.development ein
+```
+4. Füge deine Supabase-Credentials in `.env.development` ein:
+```env
+EXPO_PUBLIC_SUPABASE_URL=https://dein-projekt-id.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=dein-anon-key-hier
+```
+5. Führe das Datenbank-Schema aus:
+   - Öffne den **SQL Editor** in Supabase
+   - Kopiere den Inhalt von `supabase/schema.sql`
+   - Führe das Script aus (▶ Button)
 
-# App starten
+6. Aktiviere Email-Authentifizierung:
+   - Gehe zu **Authentication** → **Providers**
+   - Aktiviere **Email**
+   - Optional: Passe Email-Templates an unter **Authentication** → **Email Templates**
+
+#### 3. App starten
+```bash
+# Development Server starten
 npm start
 ```
 
