@@ -6,6 +6,9 @@ import { BottomTabNavigator } from './BottomTabNavigator';
 import { AuthScreen } from '@/screens/auth/AuthScreen';
 import { SettingsScreen } from '@/screens/settings/SettingsScreen';
 import { ProfileEditScreen } from '@/screens/settings/ProfileEditScreen';
+import { ChangePasswordScreen } from '@/screens/settings/ChangePasswordScreen';
+import { ThemeSettingsScreen } from '@/screens/settings/ThemeSettingsScreen';
+import { NotificationSettingsScreen } from '@/screens/settings/NotificationSettingsScreen';
 import { useAuth } from '@/hooks/useAuth';
 import { LoadingScreen } from '@/components/common';
 
@@ -40,6 +43,30 @@ export const RootNavigator: React.FC = () => {
               options={{
                 headerShown: true,
                 title: 'Profil bearbeiten',
+              }}
+            />
+            <Stack.Screen
+              name="ChangePassword"
+              component={ChangePasswordScreen}
+              options={{
+                headerShown: true,
+                title: 'Passwort ändern',
+              }}
+            />
+            <Stack.Screen
+              name="ThemeSettings"
+              component={ThemeSettingsScreen}
+              options={{
+                headerShown: true,
+                title: 'Aussehen',
+              }}
+            />
+            <Stack.Screen
+              name="NotificationSettings"
+              component={NotificationSettingsScreen}
+              options={{
+                headerShown: true,
+                title: 'Benachrichtigungen',
               }}
             />
           </>
