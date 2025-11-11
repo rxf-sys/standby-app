@@ -21,6 +21,7 @@ export type BudgetStackParamList = {
   BudgetOverview: undefined;
   AddTransaction: { type: 'income' | 'expense' };
   TransactionDetails: { transactionId: string };
+  EditTransaction: { transactionId: string };
   BudgetSettings: undefined;
   SavingsGoals: undefined;
   AddSavingsGoal: undefined;

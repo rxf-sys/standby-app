@@ -11,17 +11,17 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { User as UserIcon, Camera } from 'lucide-react-native';
 import { RootStackParamList } from '@/navigation/types';
 import { Button, Input } from '@/components/common';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth, useUpdateProfile } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfileEdit'>;
 
 export const ProfileEditScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useAuth();
+  const updateProfileMutation = useUpdateProfile();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -48,23 +48,23 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
 
-    setLoading(true);
-    try {
-      // TODO: Implement profile update with Supabase
-      // await updateProfile({ name: name.trim(), email: email.trim() });
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      Alert.alert('Erfolg', 'Profil wurde aktualisiert', [
-        { text: 'OK', onPress: () => navigation.goBack() },
-      ]);
-    } catch (error) {
-      Alert.alert('Fehler', 'Profil konnte nicht aktualisiert werden');
-      console.error('Error updating profile:', error);
-    } finally {
-      setLoading(false);
-    }
+    updateProfileMutation.mutate(
+      { name: name.trim() },
+      {
+        onSuccess: () => {
+          Alert.alert('Erfolg', 'Profil wurde aktualisiert', [
+            { text: 'OK', onPress: () => navigation.goBack() },
+          ]);
+        },
+        onError: (error: any) => {
+          Alert.alert(
+            'Fehler',
+            error?.message || 'Profil konnte nicht aktualisiert werden'
+          );
+          console.error('Error updating profile:', error);
+        },
+      }
+    );
   };
 
   const handleChangePhoto = () => {
@@ -133,7 +133,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }) => {
         <Button
           title="Änderungen speichern"
           onPress={handleSave}
-          loading={loading}
+          loading={updateProfileMutation.isPending}
           fullWidth
           style={styles.saveButton}
         />

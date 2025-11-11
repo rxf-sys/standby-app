@@ -10,15 +10,17 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Lock } from 'lucide-react-native';
 import { RootStackParamList } from '@/navigation/types';
 import { Button, Input } from '@/components/common';
+import { useUpdatePassword } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChangePassword'>;
 
 export const ChangePasswordScreen: React.FC<Props> = ({ navigation }) => {
+  const updatePasswordMutation = useUpdatePassword();
+
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleChangePassword = async () => {
     // Validation
@@ -47,31 +49,28 @@ export const ChangePasswordScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
 
-    setLoading(true);
-    try {
-      // TODO: Implement password change with Supabase
-      // await updatePassword({ currentPassword, newPassword });
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      Alert.alert('Erfolg', 'Passwort wurde erfolgreich geändert', [
-        {
-          text: 'OK',
-          onPress: () => {
-            setCurrentPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
-            navigation.goBack();
+    updatePasswordMutation.mutate(newPassword, {
+      onSuccess: () => {
+        Alert.alert('Erfolg', 'Passwort wurde erfolgreich geändert', [
+          {
+            text: 'OK',
+            onPress: () => {
+              setCurrentPassword('');
+              setNewPassword('');
+              setConfirmPassword('');
+              navigation.goBack();
+            },
           },
-        },
-      ]);
-    } catch (error) {
-      Alert.alert('Fehler', 'Passwort konnte nicht geändert werden');
-      console.error('Error changing password:', error);
-    } finally {
-      setLoading(false);
-    }
+        ]);
+      },
+      onError: (error: any) => {
+        Alert.alert(
+          'Fehler',
+          error?.message || 'Passwort konnte nicht geändert werden'
+        );
+        console.error('Error changing password:', error);
+      },
+    });
   };
 
   return (
@@ -139,7 +138,7 @@ export const ChangePasswordScreen: React.FC<Props> = ({ navigation }) => {
         <Button
           title="Passwort ändern"
           onPress={handleChangePassword}
-          loading={loading}
+          loading={updatePasswordMutation.isPending}
           fullWidth
           style={styles.submitButton}
         />
