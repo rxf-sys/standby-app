@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CalendarStackParamList } from './types';
 import { CalendarViewScreen } from '@/screens/calendar/CalendarViewScreen';
 import { AddEventScreen } from '@/screens/calendar/AddEventScreen';
+import { EventDetailsScreen } from '@/screens/calendar/EventDetailsScreen';
+import { EditEventScreen } from '@/screens/calendar/EditEventScreen';
 import { theme } from '@/theme';
 
 const Stack = createNativeStackNavigator<CalendarStackParamList>();
@@ -29,6 +31,16 @@ export const CalendarStack: React.FC = () => {
         name="AddEvent"
         component={AddEventScreen}
         options={{ title: 'Termin hinzufügen' }}
+      />
+      <Stack.Screen
+        name="EventDetails"
+        component={EventDetailsScreen}
+        options={{ title: 'Termindetails' }}
+      />
+      <Stack.Screen
+        name="EditEvent"
+        component={EditEventScreen}
+        options={{ title: 'Termin bearbeiten' }}
       />
     </Stack.Navigator>
   );
