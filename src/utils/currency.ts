@@ -22,7 +22,13 @@ export const formatCurrency = (
  * @returns Parsed number or 0 if invalid
  */
 export const parseCurrency = (value: string): number => {
-  const cleaned = value.replace(/[^\d,.-]/g, '').replace(',', '.');
+  // Remove currency symbols and whitespace
+  let cleaned = value.replace(/[^\d,.-]/g, '');
+
+  // Handle German number format: 1.234,56 -> 1234.56
+  // Remove dots (thousand separators), then replace comma with dot (decimal separator)
+  cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+
   const parsed = parseFloat(cleaned);
   return isNaN(parsed) ? 0 : parsed;
 };
@@ -36,6 +42,17 @@ export const isValidCurrency = (value: string | number): boolean => {
   if (typeof value === 'number') {
     return !isNaN(value) && value >= 0;
   }
+
+  // Empty string is invalid
+  if (!value || value.trim() === '') {
+    return false;
+  }
+
+  // Check if the string contains at least one digit
+  if (!/\d/.test(value)) {
+    return false;
+  }
+
   const parsed = parseCurrency(value);
   return !isNaN(parsed) && parsed >= 0;
 };
