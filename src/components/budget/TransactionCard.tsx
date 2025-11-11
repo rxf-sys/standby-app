@@ -32,10 +32,10 @@ const getCategoryLabel = (category: string): string => {
 };
 
 export const TransactionCard: React.FC<TransactionCardProps> = ({ transaction, onPress }) => {
-  const Component = onPress ? TouchableOpacity : View;
+  const Component = onPress ? TouchableOpacity : View as React.ComponentType<any>;
 
   return (
-    <Component style={styles.container} onPress={onPress} activeOpacity={0.7}>
+    <Component style={styles.container} onPress={onPress as any} activeOpacity={0.7}>
       <View
         style={[
           styles.categoryIndicator,

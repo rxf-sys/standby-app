@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { LucideIcon } from 'lucide-react-native';
 import { Button } from './Button';
 import { theme } from '@/theme';
 
 interface EmptyStateProps {
-  icon: LucideIcon;
+  icon: React.ComponentType<any>;
   title: string;
   message: string;
   actionLabel?: string;

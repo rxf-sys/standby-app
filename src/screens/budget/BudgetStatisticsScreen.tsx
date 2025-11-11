@@ -31,7 +31,9 @@ type Props = NativeStackScreenProps<BudgetStackParamList, 'BudgetStatistics'>;
 const { width } = Dimensions.get('window');
 
 export const BudgetStatisticsScreen: React.FC<Props> = () => {
-  const { data: transactions = [], isLoading } = useTransactions();
+  // Mock user ID - in production, get from auth
+  const userId = 'mock-user-id';
+  const { data: transactions = [], isLoading } = useTransactions(userId);
 
   const statistics = useMemo(() => {
     const monthlyTrend = calculateMonthlyTrend(transactions, 6);
@@ -193,14 +195,14 @@ export const BudgetStatisticsScreen: React.FC<Props> = () => {
               width={width - 64}
               height={280}
               colorScale={[
-                theme.colors.categoryColors.groceries,
-                theme.colors.categoryColors.transportation,
-                theme.colors.categoryColors.entertainment,
-                theme.colors.categoryColors.utilities,
-                theme.colors.categoryColors.healthcare,
-                theme.colors.categoryColors.education,
-                theme.colors.categoryColors.clothing,
-                theme.colors.categoryColors.other,
+                theme.colors.categories.food,
+                theme.colors.categories.transport,
+                theme.colors.categories.entertainment,
+                theme.colors.categories.housing,
+                theme.colors.categories.health,
+                theme.colors.categories.education,
+                theme.colors.categories.shopping,
+                theme.colors.categories.other,
               ]}
               style={{
                 labels: { fontSize: 10, fill: theme.colors.text },

@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   TouchableOpacity,
+  View,
   Text,
   StyleSheet,
   ActivityIndicator,
@@ -17,6 +18,7 @@ interface ButtonProps {
   loading?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
+  icon?: React.ReactNode;
   style?: ViewStyle;
   textStyle?: TextStyle;
 }
@@ -29,6 +31,7 @@ export const Button: React.FC<ButtonProps> = ({
   loading = false,
   disabled = false,
   fullWidth = false,
+  icon,
   style,
   textStyle,
 }) => {
@@ -60,7 +63,10 @@ export const Button: React.FC<ButtonProps> = ({
           color={variant === 'primary' ? theme.colors.textInverse : theme.colors.primary}
         />
       ) : (
-        <Text style={textStyles}>{title}</Text>
+        <>
+          {icon && <View style={styles.iconContainer}>{icon}</View>}
+          <Text style={textStyles}>{title}</Text>
+        </>
       )}
     </TouchableOpacity>
   );
@@ -72,6 +78,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: theme.borderRadius.md,
+  },
+  iconContainer: {
+    marginRight: theme.spacing.xs,
   },
   fullWidth: {
     width: '100%',

@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { LucideIcon } from 'lucide-react-native';
 import { theme } from '@/theme';
 
 interface InfoBoxProps {
-  icon?: LucideIcon;
+  icon?: React.ComponentType<any>;
   title: string;
   message: string;
   variant?: 'info' | 'success' | 'warning' | 'error';

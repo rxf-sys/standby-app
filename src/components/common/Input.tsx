@@ -5,16 +5,19 @@ import {
   Text,
   StyleSheet,
   TextInputProps,
+  StyleProp,
   ViewStyle,
+  TextStyle,
 } from 'react-native';
 import { theme } from '@/theme';
 
-interface InputProps extends TextInputProps {
+interface InputProps extends Omit<TextInputProps, 'style'> {
   label?: string;
   error?: string;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  style?: StyleProp<TextStyle>;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -34,8 +37,8 @@ export const Input: React.FC<InputProps> = ({
       <View
         style={[
           styles.inputContainer,
-          isFocused && styles.inputContainerFocused,
-          error && styles.inputContainerError,
+          isFocused ? styles.inputContainerFocused : null,
+          error ? styles.inputContainerError : null,
         ]}
       >
         {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
