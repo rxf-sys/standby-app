@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,9 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Clock, DollarSign, Users, Heart, Share2, ShoppingCart } from 'lucide-react-native';
 import { RecipesStackParamList } from '@/navigation/types';
-import { Card, LoadingScreen, Button, Badge, Divider } from '@/components/common';
-import { useRecipes, useToggleFavorite, useAddToShoppingList } from '@/hooks/useRecipes';
+import { Card, LoadingScreen, Button, Badge } from '@/components/common';
+import { useRecipe, useToggleFavorite, useAddToShoppingList } from '@/hooks/useRecipes';
 import { theme } from '@/theme';
-import { Recipe } from '@/types';
 
 type Props = NativeStackScreenProps<RecipesStackParamList, 'RecipeDetails'>;
 
@@ -85,7 +84,7 @@ export const RecipeDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
   };
 
   const getDifficultyBadge = (difficulty: string) => {
-    const map: Record<string, { variant: any; label: string }> = {
+    const map: Record<string, { variant: 'success' | 'warning' | 'error'; label: string }> = {
       easy: { variant: 'success', label: 'Einfach' },
       medium: { variant: 'warning', label: 'Mittel' },
       hard: { variant: 'error', label: 'Schwer' },
