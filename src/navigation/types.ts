@@ -4,6 +4,7 @@ export type RootStackParamList = {
   Auth: undefined;
   MainTabs: NavigatorScreenParams<TabParamList>;
   Settings: undefined;
+  ProfileEdit: undefined;
 };
 
 export type TabParamList = {
@@ -28,6 +29,7 @@ export type RecipesStackParamList = {
   RecipeDetails: { recipeId: string };
   ShoppingList: undefined;
   RecipeSearch: undefined;
+  AddShoppingListItem: undefined;
 };
 
 export type CalendarStackParamList = {

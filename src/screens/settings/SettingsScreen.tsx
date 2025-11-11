@@ -8,6 +8,8 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   User as UserIcon,
   Bell,
@@ -20,9 +22,13 @@ import {
 } from 'lucide-react-native';
 import { Card } from '@/components/common';
 import { useAuth, useSignOut } from '@/hooks/useAuth';
+import { RootStackParamList } from '@/navigation/types';
 import { theme } from '@/theme';
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export const SettingsScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
   const { user } = useAuth();
   const signOut = useSignOut();
 
@@ -95,7 +101,7 @@ export const SettingsScreen: React.FC = () => {
             icon={UserIcon}
             title="Profil bearbeiten"
             subtitle="Name, E-Mail & Foto"
-            onPress={() => Alert.alert('Info', 'Profil-Editor kommt bald')}
+            onPress={() => navigation.navigate('ProfileEdit')}
           />
           <SettingsItem
             icon={Lock}
