@@ -10,6 +10,7 @@ export type TabParamList = {
   BudgetTab: NavigatorScreenParams<BudgetStackParamList>;
   RecipesTab: NavigatorScreenParams<RecipesStackParamList>;
   CalendarTab: NavigatorScreenParams<CalendarStackParamList>;
+  ProfileTab: undefined;
 };
 
 export type BudgetStackParamList = {
@@ -19,6 +20,7 @@ export type BudgetStackParamList = {
   BudgetSettings: undefined;
   SavingsGoals: undefined;
   AddSavingsGoal: undefined;
+  BudgetStatistics: undefined;
 };
 
 export type RecipesStackParamList = {

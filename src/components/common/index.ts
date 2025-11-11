@@ -4,3 +4,7 @@ export { Input } from './Input';
 export { LoadingScreen } from './LoadingScreen';
 export { ErrorBoundary } from './ErrorBoundary';
 export { EmptyState } from './EmptyState';
+export { Badge } from './Badge';
+export { Divider } from './Divider';
+export { InfoBox } from './InfoBox';
+export { ProgressBar } from './ProgressBar';

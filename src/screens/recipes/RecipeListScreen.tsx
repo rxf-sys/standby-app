@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Search, Clock, DollarSign } from 'lucide-react-native';
+import { Search, Clock, DollarSign, ShoppingCart } from 'lucide-react-native';
 import { RecipesStackParamList } from '@/navigation/types';
 import { Card, Input, LoadingScreen } from '@/components/common';
 import { useRecipeStore } from '@/store/recipeStore';
@@ -204,6 +204,14 @@ export const RecipeListScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         }
       />
+
+      {/* Shopping List FAB */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => navigation.navigate('ShoppingList')}
+      >
+        <ShoppingCart color={theme.colors.textInverse} size={24} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -276,5 +284,17 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: theme.typography.fontSize.md,
     color: theme.colors.textSecondary,
+  },
+  fab: {
+    position: 'absolute',
+    right: theme.spacing.md,
+    bottom: theme.spacing.md,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: theme.colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...theme.shadow.lg,
   },
 });
