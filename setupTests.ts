@@ -1,5 +1,6 @@
 // Jest setup file
-import '@testing-library/jest-native/extend-expect';
+// Note: @testing-library/jest-native is deprecated in favor of built-in matchers
+// in @testing-library/react-native v12.4+
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -52,3 +53,4 @@ jest.mock('./src/services/supabase', () => ({
 
 // Global test timeout
 jest.setTimeout(10000);
+
