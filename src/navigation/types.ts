@@ -8,6 +8,7 @@ export type RootStackParamList = {
   ChangePassword: undefined;
   ThemeSettings: undefined;
   NotificationSettings: undefined;
+  HelpFAQ: undefined;
 };
 
 export type TabParamList = {

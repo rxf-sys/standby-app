@@ -52,6 +52,17 @@ StandBy ist die erste All-in-One-App, die junge Menschen (16-25 Jahre) beim Übe
   - App-Einstellungen (Benachrichtigungen, Theme, Sprache)
   - Logout-Funktion
 
+- 🌓 **Dark Mode** - Vollständig integriert
+  - Hell-Modus für tagsüber
+  - Dunkel-Modus für abends
+  - System-Theme (folgt Geräteeinstellungen)
+  - Automatischer Wechsel bei System-Theme
+
+- 📖 **Hilfe & FAQ** - Umfassende Unterstützung
+  - 12+ häufig gestellte Fragen
+  - Kategorisiert nach Themen (Budget, Rezepte, Kalender, Account)
+  - Kontaktmöglichkeit für weitere Fragen
+
 - 🔄 **Offline-First** - Funktioniert auch ohne Internet (geplant mit WatermelonDB)
 - 🔐 **Datenschutz** - DSGVO-konform, EU-Server
 - 🎨 **Modern & Intuitiv** - Für Digital Natives gemacht
@@ -250,7 +261,7 @@ Bitte nutze unsere [Issue Templates](https://github.com/username/standby-app/iss
 
 ## 📊 Projektstatus
 
-### ✅ Fertiggestellt (~98%)
+### ✅ Fertiggestellt (~99%)
 
 **Core Features:**
 - ✅ Authentifizierung (Login, Register, Passwort zurücksetzen)
@@ -264,21 +275,22 @@ Bitte nutze unsere [Issue Templates](https://github.com/username/standby-app/iss
 - ✅ React Query für Data Fetching & Caching
 - ✅ Zustand für State Management
 - ✅ Victory Charts für Finanzstatistiken
+- ✅ Dark Mode (Hell, Dunkel, System-Theme)
+- ✅ Hilfe & FAQ Sektion mit 12+ Fragen
 
 **Bereit für Produktion:**
 - Vollständige CRUD-Operationen für alle Entitäten
 - Echte User-Authentifizierung mit Supabase
 - Row Level Security (RLS) auf Datenbank
-- Responsive & moderne UI
+- Responsive & moderne UI mit Dark Mode Support
 - Fehlerbehandlung & Loading States
 - Offline-First vorbereitet (Store & Hooks)
+- Umfassendes Hilfe-System für Nutzer
 
 ### 🔄 In Entwicklung
 
-- 🌓 Dark Mode (UI vorbereitet, Aktivierung ausstehend)
 - 📱 Push Notifications (Infrastructure vorbereitet)
 - 📷 Profilbild Upload (Kamera & Galerie)
-- 📖 Hilfe & FAQ Sektion
 
 ### 🎯 Geplant
 
