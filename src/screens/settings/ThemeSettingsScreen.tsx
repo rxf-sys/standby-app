@@ -341,7 +341,7 @@ export const ThemeSettingsScreen: React.FC<Props> = () => {
         {/* Info Box */}
         <View style={styles.infoBox}>
           <Text style={styles.infoText}>
-            💡 Tipp: Wähle "System", um automatisch zwischen hellem und dunklem Theme zu wechseln, basierend auf deinen Systemeinstellungen.
+            💡 Tipp: Wähle &quot;System&quot;, um automatisch zwischen hellem und dunklem Theme zu wechseln, basierend auf deinen Systemeinstellungen.
           </Text>
         </View>
       </ScrollView>
