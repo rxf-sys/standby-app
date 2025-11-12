@@ -49,7 +49,12 @@
     "react-native-screens": "~4.16.0",
     "react-native-svg": "15.12.1",
     "react-native-vector-icons": "^10.0.3",
+<<<<<<< HEAD
     "react-native-web": "^0.21.0",
+=======
+    "react-native-web": "^0.19.13",
+    "react-native-worklets-core": "^1.6.2",
+>>>>>>> 903705f8be073765342045eb981fe649f04620e4
     "victory-native": "^37.0.2",
     "zod": "^3.22.4",
     "zustand": "^4.4.7"
