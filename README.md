@@ -248,6 +248,48 @@ Bitte nutze unsere [Issue Templates](https://github.com/username/standby-app/iss
 - [🐛 Bug Report](https://github.com/username/standby-app/issues/new?template=bug_report.md)
 - [✨ Feature Request](https://github.com/username/standby-app/issues/new?template=feature_request.md)
 
+## 📊 Projektstatus
+
+### ✅ Fertiggestellt (~98%)
+
+**Core Features:**
+- ✅ Authentifizierung (Login, Register, Passwort zurücksetzen)
+- ✅ Budget Management (Transaktionen CRUD, Kategorien, Statistiken)
+- ✅ Kalender (Events CRUD, Kategorien, Erinnerungen)
+- ✅ Rezepte (Liste, Details, Favoriten, Einkaufsliste)
+- ✅ Einstellungen (Profil, Passwort, Theme, Benachrichtigungen)
+- ✅ Supabase Backend Integration (Auth, Datenbank, RLS)
+- ✅ Pull-to-Refresh auf allen Hauptscreens
+- ✅ TypeScript Strict Mode (100% typisiert)
+- ✅ React Query für Data Fetching & Caching
+- ✅ Zustand für State Management
+- ✅ Victory Charts für Finanzstatistiken
+
+**Bereit für Produktion:**
+- Vollständige CRUD-Operationen für alle Entitäten
+- Echte User-Authentifizierung mit Supabase
+- Row Level Security (RLS) auf Datenbank
+- Responsive & moderne UI
+- Fehlerbehandlung & Loading States
+- Offline-First vorbereitet (Store & Hooks)
+
+### 🔄 In Entwicklung
+
+- 🌓 Dark Mode (UI vorbereitet, Aktivierung ausstehend)
+- 📱 Push Notifications (Infrastructure vorbereitet)
+- 📷 Profilbild Upload (Kamera & Galerie)
+- 📖 Hilfe & FAQ Sektion
+
+### 🎯 Geplant
+
+- 🔄 Offline-Synchronisation mit WatermelonDB
+- 📊 Erweiterte Budget-Analysen & Prognosen
+- 🤖 KI-basierte Rezeptvorschläge
+- 🔗 Teilen-Funktionalität für Rezepte
+- 🌍 Mehrsprachigkeit (EN, DE)
+- 📧 Email-Benachrichtigungen
+- 💳 Export-Funktionen (PDF, CSV)
+
 ## 📄 License
 
 Dieses Projekt ist unter der MIT License lizenziert - siehe [LICENSE](LICENSE) für Details.
