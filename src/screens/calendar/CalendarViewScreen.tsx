@@ -12,6 +12,7 @@ import { CalendarStackParamList } from '@/navigation/types';
 import { Card, LoadingScreen } from '@/components/common';
 import { useCalendarStore } from '@/store/calendarStore';
 import { calendarService } from '@/services/calendarService';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 import { CalendarEvent, EventCategory } from '@/types';
 import {
@@ -41,18 +42,22 @@ const CATEGORY_COLORS: Record<EventCategory, string> = {
 };
 
 export const CalendarViewScreen: React.FC<Props> = ({ navigation }) => {
+  const { user } = useAuth();
   const { events, selectedDate, setEvents, setSelectedDate } = useCalendarStore();
   const [loading, setLoading] = useState(true);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   useEffect(() => {
-    loadEvents();
-  }, []);
+    if (user) {
+      loadEvents();
+    }
+  }, [user]);
 
   const loadEvents = async () => {
+    if (!user) return;
+
     try {
-      const userId = 'mock-user-id';
-      const data = await calendarService.getEvents(userId);
+      const data = await calendarService.getEvents(user.id);
       setEvents(data);
     } catch (error) {
       console.error('Error loading events:', error);
@@ -67,7 +72,7 @@ export const CalendarViewScreen: React.FC<Props> = ({ navigation }) => {
     const mockEvents: CalendarEvent[] = [
       {
         id: '1',
-        userId: 'mock-user-id',
+        userId: user?.id || 'mock-user-id',
         title: 'Mathematik Vorlesung',
         description: 'Lineare Algebra',
         category: 'uni',

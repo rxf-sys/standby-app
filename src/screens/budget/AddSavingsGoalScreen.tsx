@@ -10,11 +10,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BudgetStackParamList } from '@/navigation/types';
 import { Button, Input } from '@/components/common';
 import { useCreateSavingsGoal } from '@/hooks/useBudget';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 
 type Props = NativeStackScreenProps<BudgetStackParamList, 'AddSavingsGoal'>;
 
 export const AddSavingsGoalScreen: React.FC<Props> = ({ navigation }) => {
+  const { user } = useAuth();
   const [name, setName] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [targetDate, setTargetDate] = useState('');
@@ -23,6 +25,11 @@ export const AddSavingsGoalScreen: React.FC<Props> = ({ navigation }) => {
   const createGoal = useCreateSavingsGoal();
 
   const handleSubmit = async () => {
+    if (!user) {
+      Alert.alert('Fehler', 'Bitte melde dich an');
+      return;
+    }
+
     if (!name.trim()) {
       Alert.alert('Fehler', 'Bitte gib einen Namen für dein Sparziel ein');
       return;
@@ -42,7 +49,7 @@ export const AddSavingsGoalScreen: React.FC<Props> = ({ navigation }) => {
     setLoading(true);
     try {
       await createGoal.mutateAsync({
-        userId: 'mock-user-id', // Replace with actual user ID
+        userId: user.id,
         name: name.trim(),
         targetAmount: amount,
         currentAmount: 0,

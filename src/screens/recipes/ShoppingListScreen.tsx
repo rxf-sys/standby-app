@@ -12,14 +12,15 @@ import { ShoppingCart, Trash2, Check, Plus } from 'lucide-react-native';
 import { RecipesStackParamList } from '@/navigation/types';
 import { Card, EmptyState, LoadingScreen } from '@/components/common';
 import { useShoppingList, useUpdateShoppingListItem, useDeleteShoppingListItem } from '@/hooks/useRecipes';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 import { ShoppingListItem } from '@/types';
 
 type Props = NativeStackScreenProps<RecipesStackParamList, 'ShoppingList'>;
 
 export const ShoppingListScreen: React.FC<Props> = ({ navigation }) => {
-  const userId = 'mock-user-id'; // Replace with actual user ID
-  const { data: items, isLoading } = useShoppingList(userId);
+  const { user } = useAuth();
+  const { data: items, isLoading } = useShoppingList(user?.id || '');
   const updateItem = useUpdateShoppingListItem();
   const deleteItem = useDeleteShoppingListItem();
 

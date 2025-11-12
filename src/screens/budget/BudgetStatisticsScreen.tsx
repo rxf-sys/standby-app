@@ -12,6 +12,7 @@ import { VictoryChart, VictoryLine, VictoryPie, VictoryBar, VictoryAxis, Victory
 import { TrendingUp, DollarSign, PieChart as PieChartIcon } from 'lucide-react-native';
 import { BudgetStackParamList } from '@/navigation/types';
 import { useTransactions } from '@/hooks/useBudget';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 import { LoadingScreen } from '@/components/common';
 import { ProgressBar, Card, Badge, Divider } from '@/components/common';
@@ -31,9 +32,8 @@ type Props = NativeStackScreenProps<BudgetStackParamList, 'BudgetStatistics'>;
 const { width } = Dimensions.get('window');
 
 export const BudgetStatisticsScreen: React.FC<Props> = () => {
-  // Mock user ID - in production, get from auth
-  const userId = 'mock-user-id';
-  const { data: transactions = [], isLoading } = useTransactions(userId);
+  const { user } = useAuth();
+  const { data: transactions = [], isLoading } = useTransactions(user?.id || '');
 
   const statistics = useMemo(() => {
     const monthlyTrend = calculateMonthlyTrend(transactions, 6);

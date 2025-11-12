@@ -11,6 +11,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RecipesStackParamList } from '@/navigation/types';
 import { Button, Input } from '@/components/common';
 import { useAddToShoppingList } from '@/hooks/useRecipes';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 
 type Props = NativeStackScreenProps<RecipesStackParamList, 'AddShoppingListItem'>;
@@ -28,7 +29,7 @@ const COMMON_UNITS = [
 ];
 
 export const AddShoppingListItemScreen: React.FC<Props> = ({ navigation }) => {
-  const userId = 'mock-user-id';
+  const { user } = useAuth();
   const addToShoppingListMutation = useAddToShoppingList();
 
   const [name, setName] = useState('');
@@ -36,6 +37,11 @@ export const AddShoppingListItemScreen: React.FC<Props> = ({ navigation }) => {
   const [unit, setUnit] = useState('Stück');
 
   const handleSubmit = () => {
+    if (!user) {
+      Alert.alert('Fehler', 'Bitte melde dich an');
+      return;
+    }
+
     if (!name.trim()) {
       Alert.alert('Fehler', 'Bitte gib einen Namen ein');
       return;
@@ -45,7 +51,7 @@ export const AddShoppingListItemScreen: React.FC<Props> = ({ navigation }) => {
 
     addToShoppingListMutation.mutate(
       {
-        userId,
+        userId: user.id,
         name: name.trim(),
         amount: amountNum,
         unit,
