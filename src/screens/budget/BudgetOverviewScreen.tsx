@@ -141,38 +141,44 @@ export const BudgetOverviewScreen: React.FC<Props> = ({ navigation }) => {
             </Card>
           ) : (
             transactions.slice(0, 10).map((transaction) => (
-              <Card key={transaction.id} style={styles.transactionCard}>
-                <View style={styles.transactionHeader}>
-                  <View
-                    style={[
-                      styles.categoryIndicator,
-                      { backgroundColor: getCategoryColor(transaction.category as ExpenseCategory) },
-                    ]}
-                  />
-                  <View style={styles.transactionInfo}>
-                    <Text style={styles.transactionDescription}>
-                      {transaction.description}
-                    </Text>
-                    <Text style={styles.transactionDate}>
-                      {new Date(transaction.date).toLocaleDateString('de-DE')}
+              <TouchableOpacity
+                key={transaction.id}
+                onPress={() => navigation.navigate('TransactionDetails', { transactionId: transaction.id })}
+                activeOpacity={0.7}
+              >
+                <Card style={styles.transactionCard}>
+                  <View style={styles.transactionHeader}>
+                    <View
+                      style={[
+                        styles.categoryIndicator,
+                        { backgroundColor: getCategoryColor(transaction.category as ExpenseCategory) },
+                      ]}
+                    />
+                    <View style={styles.transactionInfo}>
+                      <Text style={styles.transactionDescription}>
+                        {transaction.description}
+                      </Text>
+                      <Text style={styles.transactionDate}>
+                        {new Date(transaction.date).toLocaleDateString('de-DE')}
+                      </Text>
+                    </View>
+                    <Text
+                      style={[
+                        styles.transactionAmount,
+                        {
+                          color:
+                            transaction.type === 'income'
+                              ? theme.colors.success
+                              : theme.colors.error,
+                        },
+                      ]}
+                    >
+                      {transaction.type === 'income' ? '+' : '-'}
+                      {transaction.amount.toFixed(2)} €
                     </Text>
                   </View>
-                  <Text
-                    style={[
-                      styles.transactionAmount,
-                      {
-                        color:
-                          transaction.type === 'income'
-                            ? theme.colors.success
-                            : theme.colors.error,
-                      },
-                    ]}
-                  >
-                    {transaction.type === 'income' ? '+' : '-'}
-                    {transaction.amount.toFixed(2)} €
-                  </Text>
-                </View>
-              </Card>
+                </Card>
+              </TouchableOpacity>
             ))
           )}
         </View>
