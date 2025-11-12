@@ -77,8 +77,8 @@ export const saveUserPreferences = (preferences: Record<string, unknown>) =>
   saveItem(STORAGE_KEYS.USER_PREFERENCES, preferences);
 export const getUserPreferences = () => getItem<Record<string, unknown>>(STORAGE_KEYS.USER_PREFERENCES);
 
-export const saveTheme = (theme: 'light' | 'dark' | 'auto') => saveItem(STORAGE_KEYS.THEME, theme);
-export const getTheme = () => getItem<'light' | 'dark' | 'auto'>(STORAGE_KEYS.THEME);
+export const saveTheme = (theme: 'light' | 'dark' | 'system') => saveItem(STORAGE_KEYS.THEME, theme);
+export const getTheme = () => getItem<'light' | 'dark' | 'system'>(STORAGE_KEYS.THEME);
 
 export const setOnboardingCompleted = () => saveItem(STORAGE_KEYS.ONBOARDING_COMPLETED, true);
 export const isOnboardingCompleted = () => getItem<boolean>(STORAGE_KEYS.ONBOARDING_COMPLETED);

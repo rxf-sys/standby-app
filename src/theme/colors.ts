@@ -1,4 +1,6 @@
-export const colors = {
+export type ActiveTheme = 'light' | 'dark';
+
+const lightColors = {
   // Primary colors
   primary: '#6366F1',
   primaryLight: '#818CF8',
@@ -37,20 +39,6 @@ export const colors = {
   borderLight: '#F3F4F6',
   borderDark: '#D1D5DB',
 
-  // Dark mode colors
-  dark: {
-    background: '#111827',
-    backgroundSecondary: '#1F2937',
-    surface: '#1F2937',
-    surfaceSecondary: '#374151',
-    text: '#F9FAFB',
-    textSecondary: '#D1D5DB',
-    textTertiary: '#9CA3AF',
-    border: '#374151',
-    borderLight: '#4B5563',
-    borderDark: '#6B7280',
-  },
-
   // Category colors (for budget & expenses)
   categories: {
     food: '#F59E0B',
@@ -63,3 +51,62 @@ export const colors = {
     other: '#6B7280',
   },
 };
+
+const darkColors = {
+  // Primary colors
+  primary: '#818CF8',
+  primaryLight: '#A5B4FC',
+  primaryDark: '#6366F1',
+
+  // Secondary colors
+  secondary: '#34D399',
+  secondaryLight: '#6EE7B7',
+  secondaryDark: '#10B981',
+
+  // Accent colors
+  accent: '#FBBF24',
+  accentLight: '#FCD34D',
+  accentDark: '#F59E0B',
+
+  // Status colors
+  success: '#34D399',
+  warning: '#FBBF24',
+  error: '#F87171',
+  info: '#60A5FA',
+
+  // Neutral colors (dark theme)
+  background: '#111827',
+  backgroundSecondary: '#1F2937',
+  surface: '#1F2937',
+  surfaceSecondary: '#374151',
+
+  // Text colors
+  text: '#F9FAFB',
+  textSecondary: '#D1D5DB',
+  textTertiary: '#9CA3AF',
+  textInverse: '#111827',
+
+  // Border colors
+  border: '#374151',
+  borderLight: '#4B5563',
+  borderDark: '#6B7280',
+
+  // Category colors (same in dark mode but slightly adjusted)
+  categories: {
+    food: '#FBBF24',
+    transport: '#60A5FA',
+    housing: '#A78BFA',
+    entertainment: '#F472B6',
+    health: '#34D399',
+    education: '#818CF8',
+    shopping: '#F87171',
+    other: '#9CA3AF',
+  },
+};
+
+export const getColors = (theme: ActiveTheme = 'light') => {
+  return theme === 'dark' ? darkColors : lightColors;
+};
+
+// Default export for backward compatibility
+export const colors = lightColors;

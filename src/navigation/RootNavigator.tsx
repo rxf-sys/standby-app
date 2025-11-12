@@ -9,6 +9,7 @@ import { ProfileEditScreen } from '@/screens/settings/ProfileEditScreen';
 import { ChangePasswordScreen } from '@/screens/settings/ChangePasswordScreen';
 import { ThemeSettingsScreen } from '@/screens/settings/ThemeSettingsScreen';
 import { NotificationSettingsScreen } from '@/screens/settings/NotificationSettingsScreen';
+import { HelpFAQScreen } from '@/screens/settings/HelpFAQScreen';
 import { useAuth } from '@/hooks/useAuth';
 import { LoadingScreen } from '@/components/common';
 
@@ -67,6 +68,14 @@ export const RootNavigator: React.FC = () => {
               options={{
                 headerShown: true,
                 title: 'Benachrichtigungen',
+              }}
+            />
+            <Stack.Screen
+              name="HelpFAQ"
+              component={HelpFAQScreen}
+              options={{
+                headerShown: true,
+                title: 'Hilfe & FAQ',
               }}
             />
           </>

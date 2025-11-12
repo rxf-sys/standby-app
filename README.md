@@ -52,6 +52,17 @@ StandBy ist die erste All-in-One-App, die junge Menschen (16-25 Jahre) beim Übe
   - App-Einstellungen (Benachrichtigungen, Theme, Sprache)
   - Logout-Funktion
 
+- 🌓 **Dark Mode** - Vollständig integriert
+  - Hell-Modus für tagsüber
+  - Dunkel-Modus für abends
+  - System-Theme (folgt Geräteeinstellungen)
+  - Automatischer Wechsel bei System-Theme
+
+- 📖 **Hilfe & FAQ** - Umfassende Unterstützung
+  - 12+ häufig gestellte Fragen
+  - Kategorisiert nach Themen (Budget, Rezepte, Kalender, Account)
+  - Kontaktmöglichkeit für weitere Fragen
+
 - 🔄 **Offline-First** - Funktioniert auch ohne Internet (geplant mit WatermelonDB)
 - 🔐 **Datenschutz** - DSGVO-konform, EU-Server
 - 🎨 **Modern & Intuitiv** - Für Digital Natives gemacht
@@ -247,6 +258,49 @@ npm run submit:android
 Bitte nutze unsere [Issue Templates](https://github.com/username/standby-app/issues/new/choose):
 - [🐛 Bug Report](https://github.com/username/standby-app/issues/new?template=bug_report.md)
 - [✨ Feature Request](https://github.com/username/standby-app/issues/new?template=feature_request.md)
+
+## 📊 Projektstatus
+
+### ✅ Fertiggestellt (~99%)
+
+**Core Features:**
+- ✅ Authentifizierung (Login, Register, Passwort zurücksetzen)
+- ✅ Budget Management (Transaktionen CRUD, Kategorien, Statistiken)
+- ✅ Kalender (Events CRUD, Kategorien, Erinnerungen)
+- ✅ Rezepte (Liste, Details, Favoriten, Einkaufsliste)
+- ✅ Einstellungen (Profil, Passwort, Theme, Benachrichtigungen)
+- ✅ Supabase Backend Integration (Auth, Datenbank, RLS)
+- ✅ Pull-to-Refresh auf allen Hauptscreens
+- ✅ TypeScript Strict Mode (100% typisiert)
+- ✅ React Query für Data Fetching & Caching
+- ✅ Zustand für State Management
+- ✅ Victory Charts für Finanzstatistiken
+- ✅ Dark Mode (Hell, Dunkel, System-Theme)
+- ✅ Hilfe & FAQ Sektion mit 12+ Fragen
+
+**Bereit für Produktion:**
+- Vollständige CRUD-Operationen für alle Entitäten
+- Echte User-Authentifizierung mit Supabase
+- Row Level Security (RLS) auf Datenbank
+- Responsive & moderne UI mit Dark Mode Support
+- Fehlerbehandlung & Loading States
+- Offline-First vorbereitet (Store & Hooks)
+- Umfassendes Hilfe-System für Nutzer
+
+### 🔄 In Entwicklung
+
+- 📱 Push Notifications (Infrastructure vorbereitet)
+- 📷 Profilbild Upload (Kamera & Galerie)
+
+### 🎯 Geplant
+
+- 🔄 Offline-Synchronisation mit WatermelonDB
+- 📊 Erweiterte Budget-Analysen & Prognosen
+- 🤖 KI-basierte Rezeptvorschläge
+- 🔗 Teilen-Funktionalität für Rezepte
+- 🌍 Mehrsprachigkeit (EN, DE)
+- 📧 Email-Benachrichtigungen
+- 💳 Export-Funktionen (PDF, CSV)
 
 ## 📄 License
 

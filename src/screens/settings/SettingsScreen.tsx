@@ -139,7 +139,7 @@ export const SettingsScreen: React.FC = () => {
           <SettingsItem
             icon={HelpCircle}
             title="Hilfe & FAQ"
-            onPress={() => Alert.alert('Info', 'Hilfe-Center kommt bald')}
+            onPress={() => navigation.navigate('HelpFAQ')}
           />
         </View>
 
