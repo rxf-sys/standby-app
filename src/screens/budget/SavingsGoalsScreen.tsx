@@ -12,14 +12,15 @@ import { BudgetStackParamList } from '@/navigation/types';
 import { SavingsGoalCard } from '@/components/budget';
 import { EmptyState, LoadingScreen } from '@/components/common';
 import { useSavingsGoals } from '@/hooks/useBudget';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 import { Target } from 'lucide-react-native';
 
 type Props = NativeStackScreenProps<BudgetStackParamList, 'SavingsGoals'>;
 
 export const SavingsGoalsScreen: React.FC<Props> = ({ navigation }) => {
-  const userId = 'mock-user-id'; // Replace with actual user ID
-  const { data: goals, isLoading } = useSavingsGoals(userId);
+  const { user } = useAuth();
+  const { data: goals, isLoading } = useSavingsGoals(user?.id || '');
 
   if (isLoading) {
     return <LoadingScreen />;

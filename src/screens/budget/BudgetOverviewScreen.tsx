@@ -12,24 +12,28 @@ import { BudgetStackParamList } from '@/navigation/types';
 import { Card, LoadingScreen } from '@/components/common';
 import { useBudgetStore } from '@/store/budgetStore';
 import { budgetService } from '@/services/budgetService';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 import { ExpenseCategory } from '@/types';
 
 type Props = NativeStackScreenProps<BudgetStackParamList, 'BudgetOverview'>;
 
 export const BudgetOverviewScreen: React.FC<Props> = ({ navigation }) => {
+  const { user } = useAuth();
   const { transactions, setTransactions } = useBudgetStore();
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (user) {
+      loadData();
+    }
+  }, [user]);
 
   const loadData = async () => {
+    if (!user) return;
+
     try {
-      // Mock user ID - in production, get from auth
-      const userId = 'mock-user-id';
-      const data = await budgetService.getTransactions(userId);
+      const data = await budgetService.getTransactions(user.id);
       setTransactions(data);
     } catch (error) {
       console.error('Error loading transactions:', error);

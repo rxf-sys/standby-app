@@ -12,6 +12,7 @@ import { BudgetStackParamList } from '@/navigation/types';
 import { Button, Input } from '@/components/common';
 import { useBudgetStore } from '@/store/budgetStore';
 import { budgetService } from '@/services/budgetService';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 import { ExpenseCategory, IncomeSource } from '@/types';
 
@@ -53,6 +54,7 @@ const CATEGORY_LABELS: Record<ExpenseCategory | IncomeSource, string> = {
 
 export const AddTransactionScreen: React.FC<Props> = ({ navigation, route }) => {
   const { type } = route.params;
+  const { user } = useAuth();
   const { addTransaction } = useBudgetStore();
 
   const [amount, setAmount] = useState('');
@@ -65,6 +67,11 @@ export const AddTransactionScreen: React.FC<Props> = ({ navigation, route }) => 
   const categories = type === 'income' ? INCOME_SOURCES : EXPENSE_CATEGORIES;
 
   const handleSubmit = async () => {
+    if (!user) {
+      Alert.alert('Fehler', 'Bitte melde dich an');
+      return;
+    }
+
     if (!amount || parseFloat(amount) <= 0) {
       Alert.alert('Fehler', 'Bitte gib einen gültigen Betrag ein');
       return;
@@ -78,7 +85,7 @@ export const AddTransactionScreen: React.FC<Props> = ({ navigation, route }) => 
     setLoading(true);
     try {
       const transaction = await budgetService.createTransaction({
-        userId: 'mock-user-id', // In production, get from auth
+        userId: user.id,
         type,
         amount: parseFloat(amount),
         category,

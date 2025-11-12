@@ -11,6 +11,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CalendarStackParamList } from '@/navigation/types';
 import { Button, Input } from '@/components/common';
 import { useCreateEvent } from '@/hooks/useCalendar';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 import { EventCategory, ReminderType } from '@/types';
 
@@ -36,6 +37,7 @@ const REMINDERS: Array<{ value: ReminderType; label: string }> = [
 
 export const AddEventScreen: React.FC<Props> = ({ navigation, route }) => {
   const { date } = route.params;
+  const { user } = useAuth();
   const createEventMutation = useCreateEvent();
 
   const [title, setTitle] = useState('');
@@ -47,6 +49,11 @@ export const AddEventScreen: React.FC<Props> = ({ navigation, route }) => {
   const [endTime, setEndTime] = useState('10:00');
 
   const handleSubmit = () => {
+    if (!user) {
+      Alert.alert('Fehler', 'Bitte melde dich an');
+      return;
+    }
+
     if (!title.trim()) {
       Alert.alert('Fehler', 'Bitte gib einen Titel ein');
       return;
@@ -64,7 +71,7 @@ export const AddEventScreen: React.FC<Props> = ({ navigation, route }) => {
 
     createEventMutation.mutate(
       {
-        userId: 'mock-user-id',
+        userId: user.id,
         title: title.trim(),
         description: description.trim() || undefined,
         location: location.trim() || undefined,

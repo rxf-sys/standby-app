@@ -13,23 +13,27 @@ import { Clock, DollarSign, Users, Heart, Share2, ShoppingCart } from 'lucide-re
 import { RecipesStackParamList } from '@/navigation/types';
 import { Card, LoadingScreen, Button, Badge } from '@/components/common';
 import { useRecipe, useToggleFavorite, useAddToShoppingList } from '@/hooks/useRecipes';
+import { useAuth } from '@/hooks/useAuth';
 import { theme } from '@/theme';
 
 type Props = NativeStackScreenProps<RecipesStackParamList, 'RecipeDetails'>;
 
 export const RecipeDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
   const { recipeId } = route.params;
+  const { user } = useAuth();
   const { data: recipe, isLoading } = useRecipe(recipeId);
   const toggleFavoriteMutation = useToggleFavorite();
   const addToShoppingListMutation = useAddToShoppingList();
   const [isFavorite, setIsFavorite] = useState(false);
 
-  // Mock user ID - in production, get from auth
-  const userId = 'mock-user-id';
-
   const handleToggleFavorite = () => {
+    if (!user) {
+      Alert.alert('Fehler', 'Bitte melde dich an');
+      return;
+    }
+
     toggleFavoriteMutation.mutate(
-      { userId, recipeId },
+      { userId: user.id, recipeId },
       {
         onSuccess: (data) => {
           setIsFavorite(data.isFavorite);
@@ -46,12 +50,17 @@ export const RecipeDetailsScreen: React.FC<Props> = ({ route, navigation }) => {
   };
 
   const handleAddToShoppingList = () => {
+    if (!user) {
+      Alert.alert('Fehler', 'Bitte melde dich an');
+      return;
+    }
+
     if (!recipe) return;
 
     // Add all ingredients to shopping list
     const promises = recipe.ingredients.map((ingredient) =>
       addToShoppingListMutation.mutateAsync({
-        userId,
+        userId: user.id,
         recipeId: recipe.id,
         name: ingredient.name,
         amount: ingredient.amount,
