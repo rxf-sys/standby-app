@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Plus, TrendingUp, TrendingDown, Target, BarChart3 } from 'lucide-react-native';
@@ -22,6 +23,7 @@ export const BudgetOverviewScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useAuth();
   const { transactions, setTransactions } = useBudgetStore();
   const [loading, setLoading] = React.useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
     if (user) {
@@ -41,6 +43,12 @@ export const BudgetOverviewScreen: React.FC<Props> = ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  }, [user]);
 
   const calculateStats = () => {
     const income = transactions
@@ -70,7 +78,17 @@ export const BudgetOverviewScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
+          />
+        }
+      >
         {/* Balance Card */}
         <Card style={styles.balanceCard}>
           <Text style={styles.balanceLabel}>Aktueller Saldo</Text>
