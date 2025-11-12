@@ -21,6 +21,7 @@ type Props = NativeStackScreenProps<RecipesStackParamList, 'RecipeList'>;
 export const RecipeListScreen: React.FC<Props> = ({ navigation }) => {
   const { recipes, setRecipes } = useRecipeStore();
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
 
@@ -54,6 +55,12 @@ export const RecipeListScreen: React.FC<Props> = ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await loadRecipes();
+    setRefreshing(false);
+  }, []);
 
   const setMockRecipes = () => {
     const mockRecipes: Recipe[] = [
@@ -206,6 +213,8 @@ export const RecipeListScreen: React.FC<Props> = ({ navigation }) => {
         renderItem={renderRecipeCard}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>Keine Rezepte gefunden</Text>

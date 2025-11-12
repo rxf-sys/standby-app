@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Plus, Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react-native';
@@ -45,6 +46,7 @@ export const CalendarViewScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useAuth();
   const { events, selectedDate, setEvents, setSelectedDate } = useCalendarStore();
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   useEffect(() => {
@@ -67,6 +69,12 @@ export const CalendarViewScreen: React.FC<Props> = ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await loadEvents();
+    setRefreshing(false);
+  }, [user]);
 
   const setMockEvents = () => {
     const mockEvents: CalendarEvent[] = [
@@ -136,7 +144,17 @@ export const CalendarViewScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
+          />
+        }
+      >
         {/* Month Header with Navigation */}
         <Card style={styles.monthCard}>
           <View style={styles.monthHeader}>
