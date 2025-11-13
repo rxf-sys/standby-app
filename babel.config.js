@@ -3,7 +3,8 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      'react-native-reanimated/plugin',
+      // Temporarily disabled for SDK 54 compatibility
+      // 'react-native-reanimated/plugin',
       [
         'module-resolver',
         {
