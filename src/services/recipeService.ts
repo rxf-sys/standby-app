@@ -59,7 +59,7 @@ export const recipeService = {
     const { data, error } = await supabase
       .from('shopping_list')
       .select('*')
-      .eq('userId', userId)
+      .eq('user_id', userId)
       .order('checked', { ascending: true });
 
     if (error) throw error;
@@ -104,8 +104,8 @@ export const recipeService = {
     const { data: existing } = await supabase
       .from('user_favorites')
       .select('*')
-      .eq('userId', userId)
-      .eq('recipeId', recipeId)
+      .eq('user_id', userId)
+      .eq('recipe_id', recipeId)
       .single();
 
     if (existing) {
@@ -113,8 +113,8 @@ export const recipeService = {
       const { error } = await supabase
         .from('user_favorites')
         .delete()
-        .eq('userId', userId)
-        .eq('recipeId', recipeId);
+        .eq('user_id', userId)
+        .eq('recipe_id', recipeId);
 
       if (error) throw error;
       return { isFavorite: false };
@@ -122,7 +122,7 @@ export const recipeService = {
       // Add favorite
       const { error } = await supabase
         .from('user_favorites')
-        .insert({ userId, recipeId });
+        .insert({ user_id: userId, recipe_id: recipeId });
 
       if (error) throw error;
       return { isFavorite: true };
@@ -132,8 +132,8 @@ export const recipeService = {
   async getFavorites(userId: string) {
     const { data, error } = await supabase
       .from('user_favorites')
-      .select('recipeId, recipes(*)')
-      .eq('userId', userId);
+      .select('recipe_id, recipes(*)')
+      .eq('user_id', userId);
 
     if (error) throw error;
     return data?.map((item: any) => item.recipes) as Recipe[];

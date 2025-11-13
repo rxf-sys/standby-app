@@ -4,9 +4,9 @@ import { CalendarEvent, EventFilter } from '@/types';
 export const calendarService = {
   async getEvents(userId: string, filter?: EventFilter) {
     let query = supabase
-      .from('calendar_events')
+      .from('events')
       .select('*')
-      .eq('userId', userId);
+      .eq('user_id', userId);
 
     if (filter?.categories?.length) {
       query = query.in('category', filter.categories);
@@ -30,7 +30,7 @@ export const calendarService = {
 
   async getEventById(id: string) {
     const { data, error } = await supabase
-      .from('calendar_events')
+      .from('events')
       .select('*')
       .eq('id', id)
       .single();
@@ -41,7 +41,7 @@ export const calendarService = {
 
   async createEvent(event: Omit<CalendarEvent, 'id' | 'createdAt' | 'updatedAt'>) {
     const { data, error } = await supabase
-      .from('calendar_events')
+      .from('events')
       .insert(event)
       .select()
       .single();
@@ -52,7 +52,7 @@ export const calendarService = {
 
   async updateEvent(id: string, updates: Partial<CalendarEvent>) {
     const { data, error } = await supabase
-      .from('calendar_events')
+      .from('events')
       .update(updates)
       .eq('id', id)
       .select()
@@ -63,8 +63,8 @@ export const calendarService = {
   },
 
   async deleteEvent(id: string) {
-    const { error } = await supabase
-      .from('calendar_events')
+    const { error} = await supabase
+      .from('events')
       .delete()
       .eq('id', id);
 
