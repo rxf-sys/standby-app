@@ -7,7 +7,7 @@ export const budgetService = {
     const { data, error } = await supabase
       .from('transactions')
       .select('*')
-      .eq('userId', userId)
+      .eq('user_id', userId)
       .order('date', { ascending: false });
 
     if (error) throw error;
@@ -62,7 +62,7 @@ export const budgetService = {
     const { data, error } = await supabase
       .from('budgets')
       .select('*')
-      .eq('userId', userId);
+      .eq('user_id', userId);
 
     if (error) throw error;
     return data as Budget[];
@@ -84,7 +84,7 @@ export const budgetService = {
     const { data, error } = await supabase
       .from('savings_goals')
       .select('*')
-      .eq('userId', userId);
+      .eq('user_id', userId);
 
     if (error) throw error;
     return data as SavingsGoal[];
